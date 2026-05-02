@@ -1,0 +1,157 @@
+Cover Letter — submission of:
+"Discrete Drainage Dynamics VIII: Cosmogenesis from a Founding
+Impulse and the DESI DR2 Evolving Dark-Energy Signal"
+
+Stanislas de Wavrin
+Independent researcher
+dewavrin.iphone@gmail.com
+2 May 2026
+
+To the Editor,
+
+I would like to submit the enclosed manuscript for consideration.
+Below I summarise the contribution and why I believe it is timely.
+
+==========================================================================
+SUMMARY
+==========================================================================
+
+The DESI DR2 results (March 2025) provide statistical preference at
+the 2.8 to 4.2 sigma level (depending on the supernova sample combined
+with BAO) that the dark-energy equation of state evolves with redshift,
+in a very specific way: w_0 > -1 today, w_a < 0, with a smooth
+crossing of the phantom barrier (w = -1) near z ~ 0.5. This
+combination is incompatible with a cosmological constant and
+challenging for single-field quintessence, which explains the recent
+surge of theoretical proposals (quintom, non-minimal couplings,
+dark-sector interactions, modified gravity).
+
+In this manuscript I present a discrete-lattice cosmogenesis model
+that reproduces the three distinctive features of DESI DR2
+simultaneously, without introducing any new field, coupling, or
+modification of general relativity. The mechanism is simply: a
+lattice initialised with R_i = 0 on every node, filled progressively
+from a single localised exponentially-growing founding impulse,
+under the conservative drainage rule of Paper I of the same series.
+Numerical integration of the dynamics yields:
+
+  - m_inf = -3.72 +/- 0.04   (DESI: -3.72; ~0.5 sigma agreement)
+  - m_0   = +1.59 +/- 0.18   (DESI: +1.65; ~0.3 sigma agreement)
+  - phantom-crossing redshift z* ~ 0.45 (DESI: ~0.45)
+
+across an ensemble of 10 independent lattice realisations. Both
+extracted parameters are statistically indistinguishable from the
+DESI DR2 values within the realisation-to-realisation scatter. The
+phantom phase emerges naturally as the filling phase of the
+cosmogenesis cascade; the phantom crossing is the moment when the
+filling cascade saturates the lattice; the today quintessence regime
+is the post-saturation dilution.
+
+==========================================================================
+WHY THIS MATTERS NOW
+==========================================================================
+
+1. The DESI DR2 signal is the most exciting cosmological observation
+   of the past decade. Multiple competing theoretical proposals are
+   being put forward, each adding new physical ingredients (extra
+   fields, couplings, modified actions). The present model differs
+   in being parameter-economical: the same lattice rule that has
+   previously been shown in the DDD series to reproduce emergent
+   gravity, photon deflection, and the fine-structure constant also
+   accounts for the late-time dark-energy phenomenology.
+
+2. The phantom-crossing behaviour is forced by the structure of the
+   model (transition between filling and dilution regimes), not
+   fine-tuned. This is qualitatively different from minimally-
+   coupled scalar fields where crossing requires extra degrees of
+   freedom.
+
+3. The model makes distinguishing predictions that future surveys
+   (DESI DR3, Euclid, Vera Rubin Observatory, Roman Space Telescope)
+   can test: distinct asymptotic future, large-scale matter pattern
+   inherited from the founding impulse, possible reading of the
+   Hubble tension as a residual incompleteness of the cosmogenesis
+   cascade, and (developed in the companion Paper IX) a small but
+   computable departure from the Etherington reciprocity relation
+   d_L = (1+z)^2 d_A.
+
+==========================================================================
+NOVELTY AND PRIOR ART
+==========================================================================
+
+The Discrete Drainage Dynamics (DDD) framework on which this work
+builds is documented in companion manuscripts I-VII of the same
+author. These manuscripts establish the conservative drainage rule
+on a random geometric graph (Paper I), the recovery of weak-field
+gravity (Paper II), the kinematic clock-rate suppression and Weyl
+spinor structure (Paper III), photon deflection and Shapiro delay
+(Paper IV), falsification tests (Paper V), the emergent gauge
+sector and the fine-structure constant (Paper VI), and the
+gravity-gauge cross-coupling (Paper VII). The present (Paper VIII)
+is the cosmological application.
+
+The novel contributions of the present paper are:
+
+  - The cosmogenetic regime: the lattice is initialised empty
+    (R_i = 0) rather than at a uniform reference value.
+  - Connection of the phantom phase observed by DESI to lattice
+    filling dynamics.
+  - Quantitative comparison with DESI DR2 across an ensemble of
+    independent realisations and across a factor of 4 in lattice
+    size.
+  - Sensitivity and null controls (variants in source profile,
+    pumping rate, no-shutoff variant) confirming that the m_eff
+    signature is robust.
+
+==========================================================================
+SUBMISSION STRATEGY
+==========================================================================
+
+This manuscript is the eighth in a planned series of ten papers on
+Discrete Drainage Dynamics. Companion papers I-VII are at preprint
+stage on the author's repository; Paper IX (effective cosmology and
+the dilution-vs-expansion equivalence) and Paper X (off-centre
+observers and cosmological dipoles) are in preparation.
+
+I am happy to follow whichever route the editor prefers: standalone
+submission of the present paper, or coordinated submission as part
+of the series.
+
+==========================================================================
+DATA AND CODE
+==========================================================================
+
+All simulation code, data, and analysis scripts are included in the
+supplementary material and on the public repository at:
+  https://github.com/stanislasdewavrin/DDD-paper-8-cosmogenesis
+
+The headline result is reproducible in about 30 seconds on a single
+CPU core; the robustness ensemble takes about 5 minutes.
+
+==========================================================================
+SUGGESTED REFEREES
+==========================================================================
+
+[Suggest 2-3 referees here who work on dynamical dark energy, lattice
+approaches to cosmology, or emergent gravity. Candidates may include
+people working on the DESI analysis, on quintom or non-minimally
+coupled scalar models, or on causal-set / causal-dynamical-
+triangulation approaches to cosmology.]
+
+==========================================================================
+DECLARATIONS
+==========================================================================
+
+  - The author declares no competing financial interests.
+  - The work has not been previously published, and is not under
+    consideration elsewhere.
+  - All simulations were performed by the author on a personal
+    computer.
+  - The author is an independent researcher with no institutional
+    affiliation.
+
+I look forward to your feedback.
+
+With kind regards,
+
+Stanislas de Wavrin

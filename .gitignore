@@ -1,0 +1,34 @@
+# LaTeX build artefacts
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz
+
+# Versioned drafts (we keep only paper.pdf / paper.tex)
+paper_v*.pdf
+paper_v*.tex
+paper_v*.aux
+paper_v*.bbl
+paper_v*.blg
+paper_v*.log
+paper_v*.out
+paper_v*.toc
+paper_ttd/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.egg-info/
+
+# Heavy data (kept locally only - regenerate with code/)
+data/*.npz
+data/ensemble.npz
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
