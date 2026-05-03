@@ -1,0 +1,384 @@
+"""
+Source-profile robustness scan.
+
+Tests whether the DESI DR2 phantom-to-quintessence signature is unique
+to an *exponential* founding source, or generic across a wider class
+of monotone-growing-and-shutting-off profiles.
+
+For six source profiles (all normalised to the SAME total integrated
+energy as the exponential baseline, on the SAME [0, t_s] window) we
+run the cosmogenetic cascade and extract:
+  - <T^2>(t) trajectory
+  - m_eff(t) effective dilution exponent
+  - w(z) effective equation of state
+  - extracted (m_inf, m_0) compared to DESI DR2 best fit
+
+The question this figure answers is exactly:
+   "Is the exponential source the only profile that reproduces DESI?"
+
+Output: figures/fig_source_profile_comparison.{pdf,png}
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.spatial import cKDTree
+from scipy.sparse import csr_matrix
+from scipy.signal import savgol_filter
+from pathlib import Path
+import time as _time
+
+np.random.seed(2024)
+
+# =============================================================
+# Lattice + drainage parameters (same as 07_phase_heatmap.py)
+# =============================================================
+N_TARGET   = 8000     # match 04_robustness.py headline run
+L_BOX      = 50.0
+R_LINK     = 2.5
+D_MIN      = 1.0
+DIM        = 3
+SIGMA      = 3.90
+T_S        = 15.0
+ALPHA_FILL = 0.4
+KAPPA_TRAP = 8e-4   # match 04_robustness.py
+R_TRAP     = 0.05
+DT         = 5e-3
+T_MAX      = 80.0
+N_STEPS    = int(T_MAX / DT)
+SAMPLE_EVERY = 40
+
+# Exponential baseline parameters (the one used in Paper VIII)
+S0_EXP = 0.05
+GAMMA  = 0.415
+
+HERE = Path(__file__).resolve().parent.parent
+FIG  = HERE / "figures"; FIG.mkdir(exist_ok=True)
+DATA = HERE / "data";    DATA.mkdir(exist_ok=True)
+
+# =============================================================
+# Build lattice (once, shared across all profiles)
+# =============================================================
+print(f"Building lattice N~{N_TARGET}...")
+cell_size = D_MIN / np.sqrt(3)
+grid = {}
+positions_list = []
+attempts = 0
+max_attempts = N_TARGET * 30
+while len(positions_list) < N_TARGET and attempts < max_attempts:
+    candidate = np.random.uniform(0, L_BOX, size=DIM)
+    cx, cy, cz = (candidate / cell_size).astype(int)
+    ok = True
+    for dx in range(-1, 2):
+        for dy in range(-1, 2):
+            for dz in range(-1, 2):
+                key = (cx+dx, cy+dy, cz+dz)
+                if key in grid:
+                    for p in grid[key]:
+                        if np.linalg.norm(p - candidate) < D_MIN:
+                            ok = False; break
+                    if not ok: break
+                if not ok: break
+            if not ok: break
+        if not ok: break
+    if ok:
+        positions_list.append(candidate)
+        key = (cx, cy, cz)
+        grid.setdefault(key, []).append(candidate)
+    attempts += 1
+positions = np.array(positions_list)
+N = len(positions)
+print(f"  N = {N}")
+
+center = np.array([L_BOX/2]*3)
+r_node = np.linalg.norm(positions - center, axis=1)
+
+tree = cKDTree(positions)
+pairs = tree.query_pairs(R_LINK, output_type='ndarray')
+i_arr = pairs[:,0]   # smaller index of each pair (i<j)
+j_arr = pairs[:,1]   # larger index
+n_links = len(pairs)
+# Sparse adjacency just for mean degree computation
+i_full = np.concatenate([i_arr, j_arr])
+j_full = np.concatenate([j_arr, i_arr])
+W = csr_matrix((np.ones(2*n_links), (i_full, j_full)), shape=(N, N))
+D_diag = np.asarray(W.sum(axis=1)).ravel()
+D_avg = float(D_diag.mean())
+
+source_amp = np.exp(-r_node**2 / SIGMA**2)
+
+# =============================================================
+# Total integrated energy of exponential baseline (reference)
+# =============================================================
+E_tot = S0_EXP * (np.exp(GAMMA * T_S) - 1) / GAMMA
+print(f"\nReference E_tot (exponential, gamma={GAMMA}) = {E_tot:.4f}")
+
+# =============================================================
+# Source profile functions, all calibrated to give same E_tot
+#                        on the [0, t_s] window
+# =============================================================
+SIGMOID_K  = 0.7
+SIGMOID_T0 = 10.0
+
+# Numerical normalisation for sigmoid
+ts_grid = np.linspace(0, T_S, 2001)
+sigmoid_raw = 1.0 / (1.0 + np.exp(-SIGMOID_K * (ts_grid - SIGMOID_T0)))
+sigmoid_int = np.trapz(sigmoid_raw, ts_grid)
+S_MAX_SIGMOID = E_tot / sigmoid_int
+
+profiles = {
+    'exponential':  {'label': r'$S_0\,e^{\gamma t}$',
+                     'fn':    lambda t: S0_EXP * np.exp(GAMMA * t),
+                     'color': '#E41A1C'},
+    'constant':     {'label': r'$S_0$ (step)',
+                     'fn':    lambda t: E_tot / T_S,
+                     'color': '#377EB8'},
+    'linear':       {'label': r'$S_0\,t$',
+                     'fn':    lambda t: 2 * E_tot * t / T_S**2,
+                     'color': '#4DAF4A'},
+    'quadratic':    {'label': r'$S_0\,t^2$',
+                     'fn':    lambda t: 3 * E_tot * t**2 / T_S**3,
+                     'color': '#FF7F00'},
+    'cubic':        {'label': r'$S_0\,t^3$',
+                     'fn':    lambda t: 4 * E_tot * t**3 / T_S**4,
+                     'color': '#984EA3'},
+    'sigmoid':      {'label': r'sigmoid',
+                     'fn':    lambda t: S_MAX_SIGMOID / (1 + np.exp(-SIGMOID_K*(t - SIGMOID_T0))),
+                     'color': '#A65628'},
+}
+
+# Sanity check on the integrals
+print("\n--- Source profile sanity check (all should be ≈ E_tot) ---")
+for name, p in profiles.items():
+    integ = np.trapz([p['fn'](t) for t in ts_grid], ts_grid)
+    print(f"  {name:12s}  ∫S dt = {integ:.4f}")
+
+# =============================================================
+# Run cascade for each profile, recording <T^2>(t)
+# =============================================================
+results = {}
+print(f"\nIntegrating {len(profiles)} cascades for T_MAX={T_MAX}...")
+for name, p in profiles.items():
+    print(f"  --- {name:12s} ---", end=' ', flush=True)
+    t0 = _time.time()
+    src_fn = p['fn']
+    R = np.zeros(N)
+    I  = np.zeros(N)
+    sum_T2_history = []
+    times_history = []
+    # Match 04_robustness.py time sampling exactly
+    log_times = np.unique(np.concatenate([
+        np.linspace(0.02, 1, 50),
+        np.linspace(1, 15, 150),
+        np.linspace(15, 30, 60),
+        np.linspace(30, T_MAX, 40),
+    ]))
+    log_idx = 0
+    for step in range(N_STEPS):
+        t = step * DT
+        if t < T_S:
+            R += DT * src_fn(t) * source_amp
+        # Per-edge symmetric drainage (matches 04_robustness.py exactly)
+        R_diff_ij = R[j_arr] - R[i_arr]
+        flux_in_i = np.maximum(R_diff_ij,  0.0)   # inflow at i from j
+        flux_in_j = np.maximum(-R_diff_ij, 0.0)   # inflow at j from i
+        # R update: dR_i = sum_{j~i} (R_j - R_i)
+        dR = np.zeros(N)
+        np.add.at(dR, i_arr,  R_diff_ij)
+        np.add.at(dR, j_arr, -R_diff_ij)
+        R += DT * ALPHA_FILL * dR / max(D_avg, 1.0)
+        R  = np.maximum(R, 0.0)
+        # T_i = (alpha/D_avg) * sum_{j~i} max(R_j - R_i, 0)  -- inflow only
+        T_inflow = np.zeros(N)
+        np.add.at(T_inflow, i_arr, flux_in_i)
+        np.add.at(T_inflow, j_arr, flux_in_j)
+        T = ALPHA_FILL * T_inflow / max(D_avg, 1.0)
+        # Self-trapping (matches 04_robustness.py)
+        excess_R = np.maximum(R - R_TRAP, 0.0)
+        trap_drive = np.minimum(np.maximum(KAPPA_TRAP * excess_R * T * DT, 0), 0.1)
+        I = np.sqrt(np.maximum(I*I + trap_drive * T*T, 0))
+        # Use 04's log-spaced sampling for accurate m_eff extraction
+        if log_idx < len(log_times) and t >= log_times[log_idx]:
+            sum_T2_history.append(float(np.sum(T*T)))
+            times_history.append(t)
+            log_idx += 1
+    times = np.array(times_history)
+    sum_T2 = np.array(sum_T2_history)
+    t_peak = times[np.argmax(sum_T2)]
+    print(f"done in {_time.time()-t0:.1f}s   "
+          f"peak <T^2> = {sum_T2.max():.3e} at t = {t_peak:.2f}")
+    results[name] = {'label': p['label'], 'color': p['color'],
+                     'times': times, 'sum_T2': sum_T2,
+                     't_peak': t_peak}
+
+# =============================================================
+# Compute m_eff(t), w(z), and extract m_inf, m_0
+# =============================================================
+A_STAR = 0.69
+
+def compute_meff(times, sum_T2, t_min=0.05):
+    """Compute m_eff(t) = -d log(sum_T2) / d log(t) using EXACTLY the
+    convention of code/04_robustness.py: savgol_filter with window=21,
+    polynomial order 3, no edge trimming."""
+    mask = (times > t_min) & (sum_T2 > 1e-12)
+    t_v  = times[mask]
+    T2_v = sum_T2[mask]
+    if len(T2_v) < 21:
+        return t_v, np.full_like(t_v, np.nan)
+    win = min(21, len(T2_v) // 2 * 2 - 1)
+    ln_T2_smooth = savgol_filter(np.log(T2_v), win, 3)
+    m_eff = -np.gradient(ln_T2_smooth, np.log(t_v))
+    return t_v, m_eff
+
+def extract_signature(times_m, m_eff, t_peak, t_s=T_S):
+    """Extract m_inf (= m_pre) and m_0 (= m_post) using EXACTLY the
+    convention of code/04_robustness.py:
+        pre_mask  = t < 0.7 * t_peak
+        post_mask = t > 3.0 * t_peak
+        m_pre  = median of m_eff over pre_mask
+        m_post = median of m_eff over post_mask
+    """
+    pre_mask  = times_m < (t_peak * 0.7)
+    post_mask = times_m > (t_peak * 3.0)
+    m_inf = float(np.median(m_eff[pre_mask])) if pre_mask.sum() > 3 else float('nan')
+    m_0   = float(np.median(m_eff[post_mask])) if post_mask.sum() > 5 else float('nan')
+    return m_inf, m_0
+
+for name, res in results.items():
+    times_m, m_eff = compute_meff(res['times'], res['sum_T2'])
+    m_inf, m_0 = extract_signature(times_m, m_eff, res['t_peak'])
+    res['times_m'] = times_m
+    res['m_eff']   = m_eff
+    res['m_inf']   = m_inf
+    res['m_0']     = m_0
+    # t↔a calibration: same A_STAR for all, anchored at each t_peak
+    a = A_STAR * times_m / res['t_peak']
+    a = np.maximum(a, 1e-6)
+    z = 1.0/a - 1.0
+    res['z'] = z
+    res['w_eff'] = m_eff/3 - 1
+    print(f"  {name:12s}  m_inf = {m_inf:+.2f}   m_0 = {m_0:+.2f}")
+
+# =============================================================
+# Make 4-panel comparison figure
+# =============================================================
+fig, axes = plt.subplots(2, 2, figsize=(13.5, 9.0))
+ax_T2 = axes[0,0]
+ax_m  = axes[0,1]
+ax_w  = axes[1,0]
+ax_table = axes[1,1]
+
+# --- Panel A: <T^2>(t), normalised ---
+for name, res in results.items():
+    ax_T2.plot(res['times'], res['sum_T2'] / max(res['sum_T2']),
+               color=res['color'], lw=1.7,
+               label=f"{name}: {res['label']}")
+ax_T2.axvline(T_S, color='cyan', linestyle='--', lw=1.0, alpha=0.7)
+ax_T2.text(T_S+0.3, 1.1, '$t_s$', color='cyan', fontsize=10)
+ax_T2.set_xlabel('time $t$', fontsize=11)
+ax_T2.set_ylabel(r'$\sum T^2(t)\;/\;\max$', fontsize=11)
+ax_T2.set_title('(A) Cascade trajectory $\\langle T^2\\rangle(t)$ '
+                '(normalised)', fontsize=11, fontweight='bold')
+ax_T2.set_yscale('log')
+ax_T2.set_ylim(1e-3, 1.5)
+ax_T2.set_xlim(0, T_MAX)
+ax_T2.legend(loc='lower center', fontsize=8, framealpha=0.92, ncol=2)
+ax_T2.grid(alpha=0.3, which='both')
+
+# --- Panel B: m_eff(t) ---
+ax_m.axhline(0, color='red', linestyle='--', lw=1.0, alpha=0.8)
+ax_m.fill_between([0, T_MAX], -6, 0, color='blue', alpha=0.07)
+ax_m.fill_between([0, T_MAX], 0, 5, color='orange', alpha=0.07)
+ax_m.text(2.5, -5.0, r'phantom' + '\n' + r'($m<0$, $w<$-1$)',
+          fontsize=9, color='blue', alpha=0.85)
+ax_m.text(50, 3.2, r'quintessence' + '\n' + r'($m>0$, $w>$-1$)',
+          fontsize=9, color='darkorange', alpha=0.85)
+for name, res in results.items():
+    ax_m.plot(res['times_m'], res['m_eff'],
+              color=res['color'], lw=1.6, label=name)
+# DESI reference values (horizontal lines)
+ax_m.axhline(-3.72, color='black', linestyle=':', lw=1.0, alpha=0.6)
+ax_m.axhline(+1.65, color='black', linestyle=':', lw=1.0, alpha=0.6)
+ax_m.text(75, -3.72, '$m_\\infty^{\\rm DESI}$', fontsize=9,
+          color='black', va='center', ha='right')
+ax_m.text(75, +1.65, '$m_0^{\\rm DESI}$', fontsize=9,
+          color='black', va='center', ha='right')
+ax_m.set_xlabel('time $t$', fontsize=11)
+ax_m.set_ylabel(r'$m_{\rm eff}(t)$', fontsize=11)
+ax_m.set_title('(B) Effective dilution exponent (DESI bands dotted)',
+               fontsize=11, fontweight='bold')
+ax_m.set_xlim(0, T_MAX)
+ax_m.set_ylim(-6, 5)
+ax_m.grid(alpha=0.3)
+ax_m.legend(loc='upper right', fontsize=8, framealpha=0.92, ncol=2)
+
+# --- Panel C: w(z) ---
+ax_w.axhline(-1, color='red', linestyle='--', lw=1.0,
+             label=r'phantom divide $w=$-1')
+for name, res in results.items():
+    z = res['z']; w = res['w_eff']
+    msk = (z > 0) & (z < 1.5) & np.isfinite(w)
+    ax_w.plot(z[msk], w[msk], color=res['color'], lw=1.6, label=name)
+# DESI CPL fit (Lodha 2025: w_0 = -0.45, w_a = -0.83, approx)
+z_d = np.linspace(0.0, 1.0, 100)
+w_d = -0.45 - 0.83 * (z_d / (1 + z_d))
+ax_w.plot(z_d, w_d, 'k--', lw=2.2, alpha=0.7, label='DESI DR2 CPL')
+ax_w.set_xlabel('redshift $z$', fontsize=11)
+ax_w.set_ylabel(r'$w(z) = m_{\rm eff}/3 - 1$', fontsize=11)
+ax_w.set_title('(C) Effective equation of state $w(z)$',
+               fontsize=11, fontweight='bold')
+ax_w.set_xlim(0, 1.0)
+ax_w.set_ylim(-3.5, 0.5)
+ax_w.grid(alpha=0.3)
+ax_w.legend(loc='lower right', fontsize=8, framealpha=0.92, ncol=2)
+
+# --- Panel D: results table ---
+ax_table.axis('off')
+
+def fmt(v):
+    if not np.isfinite(v):
+        return 'N/A'
+    return f'${v:+.2f}$'
+
+cell_text = []
+for name, res in results.items():
+    m_inf_str = fmt(res['m_inf'])
+    m_0_str   = fmt(res['m_0'])
+    # crude DESI distance
+    d_inf = abs(res['m_inf'] - (-3.72))
+    d_0   = abs(res['m_0']   - (+1.65))
+    verdict = 'OK' if (d_inf < 0.5) and (d_0 < 0.5) else 'off'
+    cell_text.append([name, m_inf_str, m_0_str, verdict])
+cell_text.append(['DESI DR2', '$-3.72$', '$+1.65$', '---'])
+
+col_labels = ['Profile', '$m_\\infty$', '$m_0$', 'vs DESI']
+table = ax_table.table(cellText=cell_text, colLabels=col_labels,
+                       loc='center', cellLoc='center')
+table.auto_set_font_size(False)
+table.set_fontsize(10)
+table.scale(1.0, 1.65)
+# Style header
+for j in range(len(col_labels)):
+    table[(0, j)].set_facecolor('#cfe2f3')
+    table[(0, j)].set_text_props(weight='bold')
+# Style DESI row (last)
+last = len(cell_text)
+for j in range(len(col_labels)):
+    table[(last, j)].set_facecolor('#ffd966')
+    table[(last, j)].set_text_props(weight='bold')
+ax_table.set_title('(D) Extracted signature vs DESI DR2 (single calibration $a^*=0.69$)',
+                   fontsize=11, fontweight='bold', y=0.92)
+
+fig.suptitle(r'\textbf{Source-profile robustness scan:} '
+             r'is the DESI DR2 signature unique to an exponential founding source?',
+             fontsize=12.5, y=1.005)
+fig.tight_layout()
+fig.savefig(FIG / 'fig_source_profile_comparison.pdf', bbox_inches='tight')
+fig.savefig(FIG / 'fig_source_profile_comparison.png', dpi=150,
+            bbox_inches='tight')
+print(f"\nSaved -> {FIG / 'fig_source_profile_comparison.pdf'}")
+
+np.savez(DATA / '11_source_profile_scan.npz',
+         names=list(results.keys()),
+         m_inf=[results[n]['m_inf'] for n in results],
+         m_0=[results[n]['m_0']     for n in results],
+         t_peak=[results[n]['t_peak'] for n in results])
+print(f"Saved -> {DATA / '11_source_profile_scan.npz'}")

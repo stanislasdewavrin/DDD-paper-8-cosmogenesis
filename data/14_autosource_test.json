@@ -1,0 +1,40 @@
+{
+  "parameters": {
+    "N": 8000,
+    "D_avg": 3.7345,
+    "T_S": 15.0,
+    "GAMMA_ref": 0.415,
+    "EPS_UNIFORM": 0.5,
+    "EPS_PROP": 0.415,
+    "SEED_AMP": 0.2,
+    "R_TRAP": 0.05
+  },
+  "configs": {
+    "A_explicit": {
+      "name": "(A) explicit exp source S_0 e^(\u03b3t)",
+      "t_peak": 15.0,
+      "m_pre": -3.7155629955885416,
+      "m_post": 1.6515049917325442,
+      "beta_fit": 0.20614758494495883,
+      "beta_R2": 0.849114613048675
+    },
+    "D_uniform": {
+      "name": "(D) auto-source uniform \u03b5_0=0.5",
+      "t_peak": 15.0,
+      "m_pre": -1.5485578331690695,
+      "m_post": 0.5099190420678212,
+      "beta_fit": 0.2652165123755171,
+      "beta_R2": 0.9803396459961141
+    },
+    "E_proportional": {
+      "name": "(E) auto-source \u03b5\u00b7R, \u03b5_1=0.415",
+      "t_peak": 15.0,
+      "m_pre": -2.119721983114701,
+      "m_post": 1.695784714841615,
+      "beta_fit": 0.15030716797968688,
+      "beta_R2": 0.9907434073859388
+    }
+  },
+  "desi_target_m_inf": -3.72,
+  "desi_target_m_0": 1.65
+}

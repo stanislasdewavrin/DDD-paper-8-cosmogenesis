@@ -97,8 +97,11 @@ from scipy.sparse import csr_matrix
 tree = cKDTree(positions)
 pairs = tree.query_pairs(R_LINK, output_type='ndarray')
 # Symmetrise
-edges_i = np.concatenate([pairs[:,0], pairs[:,1]])
-edges_j = np.concatenate([pairs[:,1], pairs[:,0]])
+i_arr = pairs[:,0]
+j_arr = pairs[:,1]
+n_links = len(pairs)
+edges_i = np.concatenate([i_arr, j_arr])
+edges_j = np.concatenate([j_arr, i_arr])
 adj = csr_matrix((np.ones(len(edges_i)), (edges_i, edges_j)), shape=(N, N))
 deg = np.asarray(adj.sum(axis=1)).ravel()
 mean_deg = float(deg.mean())
@@ -138,15 +141,21 @@ for step in range(N_STEPS):
     if t < T_S:
         R += DT * S_0 * np.exp(GAMMA * t) * source_amp
 
-    # Vectorised flux: net = adj @ R - deg * R  (i.e. sum_j (R_j - R_i))
-    sumR_neigh = adj @ R
-    flux_net = coef * (sumR_neigh - deg * R)
-    # Translational T_i = sum_j max(R_j - R_i, 0)*coef — needs per-edge max
-    # Approximate with the positive part of the net flux (good enough for visualization)
-    T = np.maximum(flux_net, 0.0)
-
-    R += DT * flux_net
+    # Per-edge symmetric drainage (matches paper.tex eqn and 04_robustness.py exactly)
+    R_diff_ij = R[j_arr] - R[i_arr]
+    flux_in_i = np.maximum(R_diff_ij,  0.0)
+    flux_in_j = np.maximum(-R_diff_ij, 0.0)
+    # R update: dR_i = sum_{j~i} (R_j - R_i)
+    dR_per_node = np.zeros(N)
+    np.add.at(dR_per_node, i_arr,  R_diff_ij)
+    np.add.at(dR_per_node, j_arr, -R_diff_ij)
+    R += DT * coef * dR_per_node
     R = np.maximum(R, 0.0)
+    # Correct T_i = (alpha/D_avg) * sum_{j~i} max(R_j - R_i, 0)
+    T_inflow = np.zeros(N)
+    np.add.at(T_inflow, i_arr, flux_in_i)
+    np.add.at(T_inflow, j_arr, flux_in_j)
+    T = coef * T_inflow
 
     # Self-trapping
     above = np.maximum(R - R_TRAP, 0.0)
@@ -231,9 +240,9 @@ ax2 = fig.add_subplot(gs[1], sharex=ax1)
 ax2.plot(times, m_eff, 'b-', lw=1.6, label=r'$m_{\rm eff}(t)$')
 ax2.axhline(0, color='k', lw=0.8, linestyle='--')
 ax2.fill_between(times, 0, m_eff, where=(m_eff < 0),
-                 color='blue', alpha=0.15, label=r'phantom ($w < -1$)')
+                 color='blue', alpha=0.15, label=r'phantom ($w<-1$)')
 ax2.fill_between(times, 0, m_eff, where=(m_eff > 0),
-                 color='orange', alpha=0.15, label=r'quintessence ($w > -1$)')
+                 color='orange', alpha=0.15, label=r'quintessence ($w>-1$)')
 ax2.axvline(T_S, color='cyan', linestyle='--', lw=1, alpha=0.6)
 ax2.axvline(t_peak, color='lime', linestyle=':', lw=1, alpha=0.6)
 ax2.set_ylabel(r'$m_{\rm eff}(t)$', fontsize=11)
@@ -246,7 +255,7 @@ ax3 = fig.add_subplot(gs[2])
 mask = (z_arr > 0) & (z_arr < 3) & np.isfinite(w_eff)
 ax3.plot(z_arr[mask], w_eff[mask], 'b-', lw=1.6, label=r'DDD simulation')
 ax3.axhline(-1, color='red', linestyle='--', lw=1.2,
-            label='phantom divide $w=-1$')
+            label=r'phantom divide $w=-1$')
 ax3.fill_between(z_arr[mask], -2, w_eff[mask],
                  where=w_eff[mask] < -1,
                  color='blue', alpha=0.15)

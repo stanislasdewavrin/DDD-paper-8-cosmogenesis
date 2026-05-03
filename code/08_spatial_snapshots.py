@@ -179,12 +179,12 @@ for k, ax in enumerate(axes):
             color='cyan', linestyle='--', lw=0.8, alpha=0.7)
     # Phase label
     if t < T_S:
-        phase = 'source ON  ($w<-1$)'; col = 'lightcoral'
+        phase = r'source ON ($w<-1$)'; col = 'lightcoral'
     elif t < T_S + 5:
-        phase = 'crossing $w \\to -1$'; col = 'gold'
+        phase = r'crossing $w=-1$'; col = 'gold'
     else:
-        phase = 'dilution  ($w>-1$)'; col = 'skyblue'
-    ax.set_title(f'$t = {t:.1f}$  —  {phase}', fontsize=11, color=col,
+        phase = r'dilution ($w>-1$)'; col = 'skyblue'
+    ax.set_title(f't = {t:.1f}  —  {phase}', fontsize=11, color=col,
                  fontweight='bold')
     ax.set_xlim(-L_BOX/2, L_BOX/2)
     ax.set_ylim(-L_BOX/2, L_BOX/2)

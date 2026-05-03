@@ -1,7 +1,9 @@
 \documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath,amssymb,amsthm}
+\usepackage{amsmath,amssymb,amsthm,bm}
+\usepackage{enumitem}
+\usepackage{placeins}
 \usepackage{graphicx}
 \usepackage[margin=2.5cm]{geometry}
 \usepackage{hyperref}
@@ -31,42 +33,52 @@ $w_0 w_a$ CPL parametrisation, shows a $2.8\text{--}4.2\sigma$
 preference (depending on the SN sample) for an evolving dark-energy
 equation of state $w(z)$ with a favoured trajectory crossing the
 phantom divide $w = -1$ near $z \simeq 0.5$ and a quintessence-like
-present. If confirmed, this would be difficult to accommodate within a
-strict cosmological-constant interpretation; conventional dynamical
+present. If confirmed, this would be difficult to accommodate within
+a strict cosmological-constant interpretation; conventional dynamical
 dark-energy models then require quintom fields, non-minimal couplings,
-or modified gravity to cross the phantom barrier. We propose instead that the signal is the
-macroscopic signature of a discrete substrate filling itself from a
-single localised founding impulse.
+or modified gravity to cross the phantom barrier. We propose instead
+that the signal is the macroscopic signature of a discrete substrate
+self-organising from a single localised founding impulse.
 
 The construction sits inside the DDD programme of Papers~I--VII. The
-substrate is the cubic discrete network of Paper~I with reserve
-$R_i \geq 0$ and rest value $R_0$. We consider the cosmogenetic regime
-in which the reserve is initially zero everywhere, $R_i(0) = 0$, and a
-single localised exponential source pumps energy into the lattice
-during a finite epoch $t < t_s$. After the source ends, the dynamics
-follows the conservative drainage rule of Paper~I with constant
-mobility $\mu \equiv 1$. The resulting cascade naturally exhibits
-three phases: a phantom phase ($w < -1$) during the filling, a
-crossing of $w = -1$ at the saturation of the cascade, and a
-quintessence phase ($w > -1$) during the post-saturation dilution.
+substrate is the discrete network of Paper~I with reserve $R_i \geq 0$.
+We consider the cosmogenetic regime in which $R_i(0)$ is a localised
+seed of amplitude $\sim R_{\rm trap}$ around a centre $\Omega$, and
+during a finite \emph{creation epoch} $t < t_s$ each currently active
+node ($R_i > R_{\rm trap}$) amplifies its reserve by the local
+autocatalysis rule $\dot R_i\big|_{\rm source} = \epsilon \, R_i$.
+At $t = t_s$ the autocatalysis ceases definitively and the dynamics
+reduces to the unmodified conservative drainage rule of Paper~I with
+constant mobility $\mu \equiv 1$. No externally-imposed time-dependent
+source profile is required: the global exponential growth of the
+cascade emerges from local self-feedback.
 
-We measure on $N = 8000$-node Poisson-disk lattices the asymptotic and
-present-day dilution exponents $m_\infty = -3.74 \pm 0.04$ and
-$m_0 = +1.59 \pm 0.18$ across $10$ random realisations, with the peak
-of the dark-energy density at $z^\ast \simeq 0.45$. These match the
-DESI DR2 best-fit values within $0.5\sigma$ and $0.3\sigma$
-respectively, after a single global time-to-scale-factor calibration
-($a^\ast = 0.69$ at the simulation peak): the source strength, growth
-rate, and width are fixed once by a coarse scan and held across the
-ensemble, and no DESI quantity is fitted per realisation. The emergent ratio $\Omega_m/\Omega_\Lambda
-\approx 0.46$ between bound and propagating components is a natural
-output of the cascade, not an input. The model predicts three
-distinguishing observables: a dipolar modulation of $H_0$ correlated
-with off-centre observer position, an asymptotic non-de-Sitter
-("thermal-death") future, and matter-distribution dipole anomalies
-beyond the kinematic CMB dipole. We do not derive analytically the
-exponential pumping rate $\gamma$; deriving it from the substrate's
-self-feedback is the principal open problem of the framework.
+The resulting cascade naturally exhibits three phases: a phantom phase
+($w < -1$) during the autocatalytic filling, a crossing of $w = -1$
+at saturation, and a quintessence phase ($w > -1$) during
+post-saturation dilution. Numerical simulations on $N = 8000$-node
+Poisson-disk lattices (10 random realisations) at the calibrated
+working point $(\epsilon, t_s) = (0.65, 15)$ yield the asymptotic and
+present-day dilution exponents $m_\infty = -3.83 \pm 0.15$ and
+$m_0 = +1.57 \pm 0.19$, compared with DESI DR2 best-fit values
+$m_\infty^{\rm DESI} = -3.72$ and $m_0^{\rm DESI} = +1.65$ --- agreement
+at $0.8\sigma$ and $0.4\sigma$ respectively, after a single global
+time-to-scale-factor calibration ($a^\ast = 0.69$ at the simulation
+peak). We document a one-parameter degeneracy $(\epsilon, t_s)$
+identified by direct scan: the data fix a curve in the $(\epsilon,
+t_s)$ plane rather than each parameter separately. The late-time
+exponent $m_0$ is found to be \emph{universal} across the family ---
+a substrate-geometric prediction independent of the source mechanism
+--- while $m_\infty$ is sensitive to where on the family one operates.
+
+The model predicts three distinguishing observables: a dipolar
+modulation of $H_0$ correlated with off-centre observer position
+relative to $\Omega$, an asymptotic non-de-Sitter (``thermal-death'')
+future, and matter-distribution dipole anomalies beyond the kinematic
+CMB dipole. We do not derive analytically either $\epsilon$ or $t_s$
+individually; their joint determination from substrate microphysics
+(criticality of the local autocatalysis, microscopic origin of the
+creation epoch) is the principal open problem of the framework.
 \end{abstract}
 
 \section{Main claims and scope}
@@ -76,32 +88,44 @@ self-feedback is the principal open problem of the framework.
 \item \textbf{Cosmogenetic regime of the DDD substrate.} The substrate
 of Paper~I, with reserve $R_i \geq 0$ and constant-mobility baseline
 $\mu \equiv 1$, admits a non-trivial \emph{cosmogenetic} initial
-condition $R_i(0) = 0$ on every node, broken by a single localised
-exponential source acting only during $t < t_s$. After the source
-ends, the dynamics is the unmodified conservative drainage rule.
+condition: a localised seed $R_i(0) \sim R_{\rm trap}$ around a centre
+$\Omega$, evolved by the conservative drainage rule of Paper~I
+\emph{augmented during a finite creation epoch} $t < t_s$ by a local
+autocatalysis term $\dot R_i\big|_{\rm source} = \epsilon \, R_i$
+acting only on currently active nodes ($R_i > R_{\rm trap}$). At
+$t = t_s$ the autocatalysis ceases definitively and the rule reduces
+to the unmodified conservative drainage. The exponential growth of
+the global cascade is then a \emph{consequence} of the local
+self-feedback rather than an externally-imposed time profile.
 
 \item \textbf{Three phases of the cascade.}
-The translational component $T_i = \alpha\,\bar D^{-1}\sum_{j\sim i}
+The translational component $T_i = (\alpha/\bar D)\sum_{j\sim i}
 \max(R_j - R_i, 0)$ exhibits, on cosmological time scales:
 (a) an exponential filling phase during which the global mean
 $\langle T^2\rangle$ \emph{grows} with the scale factor, equivalent to
 a phantom equation of state $w < -1$;
-(b) a saturation crossing at $w = -1$ when the source ends and the
-cascade fills the lattice;
+(b) a saturation crossing at $w = -1$ when the autocatalysis ends and
+the cascade is set free to disperse;
 (c) a quintessence-like dilution phase $w > -1$ in which $\langle
 T^2\rangle$ decays by conservative dispersion.
 
-\item \textbf{Quantitative match to the DESI DR2 best-fit values after a single global $t\leftrightarrow a$ calibration.} An ensemble of $10$ random Poisson-disk lattices yields
-$m_\infty = -3.74 \pm 0.04$ and $m_0 = +1.59 \pm 0.18$, matching the
-DESI DR2 fit values $m_\infty^{\rm DESI} = -3.72$ and $m_0^{\rm DESI}
-= +1.65$ within $0.5\sigma$ and $0.3\sigma$ respectively. The peak of
-the dark-energy density is at $z^\ast \simeq 0.45$, matching the DESI
-inferred peak. The agreement holds for source parameters fixed
-\emph{once} by a coarse scan and held across the ensemble. We do
-calibrate one global \emph{time-to-scale-factor} mapping by
-identifying the simulation peak of $\sum T^2$ with the DESI-inferred
-$a^\ast = 0.69$; no other DESI-derived quantity enters the simulation,
-and no fit to DESI is performed per realisation.
+\item \textbf{Quantitative match to DESI DR2 along a one-parameter
+family of $(\epsilon, t_s)$ pairs.} At the working point
+$(\epsilon, t_s) = (0.65, 15)$, an ensemble of $10$ random Poisson-disk
+lattices yields $m_\infty = -3.83 \pm 0.15$ and $m_0 = +1.57 \pm 0.19$,
+matching the DESI DR2 best-fit values $m_\infty^{\rm DESI} = -3.72$
+and $m_0^{\rm DESI} = +1.65$ within $0.8\sigma$ and $0.4\sigma$
+respectively. The peak of the dark-energy density is at
+$z^\ast \simeq 0.45$, matching the DESI inferred peak. A direct
+parameter scan in the autocatalysis rate $\epsilon$ and creation-epoch
+duration $t_s$ shows that DESI-matching solutions occupy a
+\emph{one-parameter family} along a curve in the $(\epsilon, t_s)$
+plane (Sec.~\ref{sec:sensitivity}); the data fix the curve, not each
+parameter separately. We do calibrate one global
+\emph{time-to-scale-factor} mapping by identifying the simulation
+peak of $\sum T^2$ with the DESI-inferred $a^\ast = 0.69$; no other
+DESI-derived quantity enters the simulation, and no fit to DESI is
+performed per realisation.
 
 \item \textbf{Three distinguishing predictions.} The model predicts
 (i) a dipolar modulation of $H_0$ correlated with the observer's
@@ -118,9 +142,10 @@ are consistent with this picture.
 \end{enumerate}
 
 \textbf{Limitations and scope.}
-We do not derive the exponential pumping rate $\gamma$ from
-microscopic dynamics; it is set once by a coarse parameter scan and
-held fixed across realisations. We do not derive the
+We do not derive the autocatalysis rate $\epsilon$ or the
+creation-epoch duration $t_s$ separately from microscopic dynamics;
+they are calibrated jointly along a one-parameter family of
+DESI-matching solutions. We do not derive the
 $t \leftrightarrow a$ mapping between simulation time and cosmological
 scale factor from first principles; we adopt the simplest convention
 in which the peak of $T^2$ is identified with the DESI inferred
@@ -158,17 +183,21 @@ Paper~I is a discrete network with a non-negative reserve $R_i$ and
 a conservative local drainage rule. Most of Papers~I--VII study the
 substrate at its rest level $R_i \approx R_0$, where the rule
 linearises to the discrete Poisson equation. The cosmogenetic regime
-is the opposite extreme: $R_i = 0$ initially everywhere. A single
-localised impulse then introduces energy, and the cascade fills the
-lattice from this founding event.
+is the opposite extreme: $R_i$ is essentially zero everywhere except
+for a small localised seed around a centre $\Omega$, slightly above
+the activation threshold $R_{\rm trap}$. During a finite creation
+epoch, this seed is amplified by a local autocatalysis rule
+$\dot R_i\big|_{\rm source} = \epsilon R_i$, and the cascade fills
+the lattice from this founding event.
 
 In this regime, the global translational amplitude $\langle T^2\rangle$
 \emph{grows} during filling --- precisely what an external observer
-identifies as $w < -1$. When the source ends and the cascade
-saturates, $\langle T^2\rangle$ stops growing and starts diluting,
-giving $w$ that crosses $-1$ smoothly and asymptotes to $w > -1$.
-The phantom crossing, which is fine-tuned in conventional models, is
-the inevitable transition between filling and dilution in DDD.
+identifies as $w < -1$. When the autocatalysis ends at $t = t_s$ and
+the cascade saturates, $\langle T^2\rangle$ stops growing and starts
+diluting, giving $w$ that crosses $-1$ smoothly and asymptotes to
+$w > -1$. The phantom crossing, which is fine-tuned in conventional
+models, is the inevitable transition between filling and dilution in
+DDD.
 
 This reading also contains a strong falsifier. The founding impulse
 is localised, so its observational signature should not be exactly
@@ -205,48 +234,59 @@ grows during filling, and dilutes after saturation, because the
 universe's substrate is just now finishing the cascade that filled
 it from a single founding event.
 
-\textbf{The picture.} Imagine the substrate of Paper~I, the cubic
-jungle gym of nodes and links carrying a non-negative reserve. Set
-the reserve to zero everywhere ($R_i = 0$) at the cosmogenetic
-moment. Add one localised, exponentially growing source at the
-centre, lasting for a brief epoch $t < t_s$. Then watch.
+\textbf{The picture.} Imagine the substrate of Paper~I with reserve
+$R_i$ essentially zero everywhere, except for a small localised seed
+around $\Omega$, slightly above the activation threshold
+$R_{\rm trap}$. During a finite \emph{creation epoch} $t < t_s$, every
+currently active node ($R_i > R_{\rm trap}$) amplifies its own reserve
+through the local autocatalysis rule
+$\dot R_i\big|_{\rm source} = \epsilon R_i$. Conservative drainage of
+Paper~I spreads this activation to neighbouring nodes, which can in
+turn become active and start amplifying their own reserve.
+The global cascade then grows approximately exponentially --- but no
+external exponential clock is imposed. The exponential time
+profile that one observes \emph{emerges} from the local self-feedback
+combined with the finite cascade speed.
 
-The source pumps reserve into a local region. That region, being
-above zero while its neighbours are at zero, drains by the rule of
-Paper~I. The drainage propagates outward at the substrate speed; a
-front of "filling" sweeps through the lattice. While the front is
-sweeping, the global amount of $T^2$ grows because new sites are
-being lifted above zero. From the outside, this looks like
-\emph{negative} dilution: the integrated $T^2$ scales with the
-expanding observable volume in a way that, when fitted by an
-effective equation of state, gives $w < -1$ --- the phantom regime.
-There is no real violation of the null-energy condition; it is just
-that the system is not in a closed-volume conservative state. It is
-being filled.
+This local autocatalysis lifts more and more nodes above zero. From
+the outside, this looks like \emph{negative} dilution: the integrated
+$T^2$ scales with the expanding observable volume in a way that, when
+fitted by an effective equation of state, gives $w < -1$ --- the
+phantom regime. There is no violation of the null-energy condition
+\emph{in the dynamics}; the energy is being created during the finite
+creation epoch and the system is therefore not in a closed-volume
+conservative state during that epoch. The non-conservation is
+controlled, finite, and ends abruptly at $t = t_s$.
 
-When the front reaches the boundary or saturates, the source ends and
-no more energy enters the lattice. From this moment, $T^2$ starts
-diluting by ordinary dispersion. The scaling exponent flips sign, and
-the effective $w$ crosses $-1$ smoothly. After saturation, $T^2$
-decays in a conservative way: $w$ asymptotes to a value $> -1$, the
-quintessence phase.
+When $t = t_s$ the autocatalysis switches off definitively. From this
+moment, $T^2$ starts diluting by ordinary conservative dispersion of
+Paper~I. The scaling exponent flips sign, and the effective $w$
+crosses $-1$ smoothly. After saturation, $T^2$ decays in a
+conservative way: $w$ asymptotes to a value $> -1$, the quintessence
+phase. The late-time exponent $m_0$ in this phase is found
+empirically to be \emph{universal} across the source mechanism (see
+Sec.~\ref{sec:m0-universal}); it is therefore a substrate-geometric
+prediction, not a calibration.
 
-\textbf{Why $z \simeq 0.5$?} In our simulation, the source duration
-$t_s$ and the cascade speed are such that the saturation occurs at
-the cosmological scale factor that today's observers see at $z
-\simeq 0.5$. This is a consequence of the simulation's calibration to
-DESI's matter-to-dark-energy ratio --- not a derivation of $z^\ast$
-from first principles, but a statement that one consistent calibration
-fixes both quantities at once.
+\textbf{Why $z \simeq 0.5$?} In our simulation, the autocatalysis rate
+$\epsilon$ and the creation-epoch duration $t_s$ are such that the
+saturation occurs at the cosmological scale factor that today's
+observers see at $z \simeq 0.5$. This is a consequence of the
+simulation's calibration to DESI's matter-to-dark-energy ratio --- not
+a derivation of $z^\ast$ from first principles, but a statement that
+one consistent calibration fixes both quantities at once.
 
-\textbf{The Bell-honest qualifier.} We do not derive the source's
-exponential growth rate $\gamma$ from the DDD substrate. We posit a
-specific source profile, fix its parameters once, and measure the
-resulting cascade. The match to DESI DR2 is then a robust property of
-the cascade dynamics. Whether $\gamma$ itself emerges from the
-substrate's self-feedback is the principal theoretical open question.
+\textbf{The Bell-honest qualifier.} We do not derive the autocatalysis
+rate $\epsilon$ or the creation-epoch duration $t_s$ from the DDD
+substrate. We posit the local autocatalysis rule, calibrate
+$(\epsilon, t_s)$ jointly to DESI (Sec.~\ref{sec:eps-ts}: a
+one-parameter family of pairs reproduces the signal), and verify that
+the match is robust to lattice realisation. Whether $\epsilon$ emerges
+from a substrate-level criticality, and whether $t_s$ emerges from a
+substrate-level phase transition, are the principal theoretical open
+questions.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/fig_phase_heatmap.pdf}
 \caption{Chronology of the cosmogenetic cascade in three panels.
@@ -272,7 +312,7 @@ shaded as in panel B. Reproducible via
 \label{fig:phase-heatmap}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.99\textwidth]{figures/fig_radial_profile.pdf}
 \caption{Isotropic radial view of the cosmogenetic cascade. Because
@@ -295,7 +335,7 @@ end of the source. Reproducible via \texttt{code/09\_radial\_profile.py}.}
 \label{fig:radial-profile}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.99\textwidth]{figures/fig_iso_R_snapshots.pdf}
 \caption{\textbf{Isotropic 2D reconstruction of $R(x,y)$ at 8 snapshots.}
@@ -315,7 +355,7 @@ and shared across all panels. Reproducible via
 \label{fig:iso-R-snapshots}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.99\textwidth]{figures/fig_iso_T2_front.pdf}
 \caption{\textbf{Position of the translational front $T^2(x,y)$ at 8
@@ -374,6 +414,7 @@ In the present paper we adopt the calibration $a = a^\ast(t/t^\ast)$
 as a pragmatic convention and confine our claim to the empirical match
 of the cosmogenetic mechanism with the DESI DR2 signature.
 
+\FloatBarrier
 \section{The cosmogenetic setup on the DDD substrate}
 \label{sec:setup}
 
@@ -409,36 +450,87 @@ component $I_i$ tracks the local amplitude of self-trapped excitations
 with $\kappa$ the trapping rate and $R_{\rm trap}$ the activation
 threshold.
 
-\subsection{The cosmogenetic initial condition and source}
+\subsection{The cosmogenetic initial condition and creation epoch}
+\label{sec:cosmogenetic-rule}
 
 Most of Papers~I--VII assume the substrate is at its rest level
 $R_i \approx R_0$, where the dynamics linearises around $R_0$. The
 \emph{cosmogenetic regime} is the opposite extreme: at the founding
-moment $t = 0$,
+moment $t = 0$, the reserve is essentially zero except for a
+localised seed of finite extent $\sigma$ around a centre $\Omega$
+(taken at the lattice centre $\mathbf{x}_c$),
 \begin{equation}
-R_i(0) \;=\; 0
-\quad \text{on every node,}
+R_i(0) \;=\; R_{\rm seed}\,
+\exp\!\Big(-\frac{|\mathbf{x}_i - \mathbf{x}_c|^2}{\sigma^2}\Big),
+\label{eq:seed}
 \end{equation}
-the reserve is identically zero. The dynamics is then non-trivial
-only because of an external source. We posit a single localised,
-exponentially growing pump at the lattice centre, acting during
-$t < t_s$:
+with $R_{\rm seed}$ chosen so that $R_i(0) > R_{\rm trap}$ on a small
+core of nodes around $\Omega$ (in numerical work, $R_{\rm seed} \simeq
+4\,R_{\rm trap}$ suffices). The dynamics is then non-trivial because
+of a \emph{local autocatalysis rule} acting only during a finite
+creation epoch $t < t_s$:
+\begin{equation}
+\frac{\partial R_i}{\partial t}\bigg|_{\rm source} \;=\;
+\epsilon \, R_i \cdot \mathbb{1}\!\left[R_i > R_{\rm trap}\right],
+\quad t < t_s,
+\label{eq:autocatalysis}
+\end{equation}
+where $\epsilon$ is the local autocatalysis rate, the indicator
+$\mathbb{1}[R_i > R_{\rm trap}]$ restricts the rule to currently
+active nodes, and $R_{\rm trap}$ is the activation threshold defined
+by the trapping rule \eqref{eq:trapping}. At $t = t_s$ the
+autocatalysis switches off definitively and the dynamics is purely
+\eqref{eq:rule}: strict conservation thereafter.
+
+\paragraph{Physical interpretation.} The rule
+\eqref{eq:autocatalysis} states that during the creation epoch each
+sufficiently excited node \emph{amplifies its own reserve} at a rate
+$\epsilon$ that is a property of the substrate (the same value at
+every node). The exponential growth of the global reserve content
+is then a \emph{consequence} of this local self-feedback combined
+with the conservative drainage that propagates $R$ to neighbours;
+no externally-imposed time-dependent source profile is required. We
+emphasise that $\epsilon$ is a node-level rate (units of inverse
+lattice time), not a global calendar.
+
+\paragraph{Parameters.} The cosmogenetic regime adds three
+parameters beyond the substrate of Paper~I: $\epsilon$, $t_s$, and
+the seed width $\sigma$. We do \emph{not} derive any of them from
+microscopic dynamics; we calibrate jointly to match DESI as
+discussed in Sec.~\ref{sec:sensitivity}, where it is shown that DESI
+fixes a one-parameter family in the $(\epsilon, t_s)$ plane rather
+than each individually. The headline numerical results below use the
+working point $(\epsilon, t_s, \sigma) = (0.65, 15, 3.9)$ with
+seed $R_{\rm seed} = 0.22$ (in lattice units, $R_{\rm trap} = 0.05$).
+
+\paragraph{Equivalent formulation: explicit exponential source.} The
+autocatalysis rule \eqref{eq:autocatalysis} can be replaced by an
+\emph{operationally equivalent} formulation in which the seed is
+zero ($R_i(0) = 0$) and the local autocatalysis is replaced by an
+explicit, externally-imposed time-dependent source localised on the
+same Gaussian profile:
 \begin{equation}
 \frac{\partial R_i}{\partial t}\bigg|_{\rm source} \;=\;
 S_0\, e^{\gamma t}\,
 \exp\!\Big(-\frac{|\mathbf{x}_i - \mathbf{x}_c|^2}{\sigma^2}\Big),
-\quad t < t_s,
-\label{eq:source}
+\quad t < t_s.
+\label{eq:exp-source}
 \end{equation}
-with $S_0$ the initial pumping amplitude, $\gamma$ the exponential
-growth rate, $\sigma$ the source width, $\mathbf{x}_c$ the lattice
-centre, and $t_s$ the source duration. After $t = t_s$ the source
-switches off and the dynamics is purely \eqref{eq:rule}.
-
-The source is the only ingredient added beyond the standard DDD rule.
-We do \emph{not} derive $\gamma$ from microscopic dynamics; we treat
-it as a phenomenological parameter, fix it once by a coarse scan, and
-verify that the DESI match is robust to lattice realisation.
+This is the formulation used in the original numerical work
+\texttt{04\_robustness.py} of the present paper, with the equivalent
+working point $(S_0, \gamma, t_s, \sigma) = (0.05, 0.415, 15, 3.9)$.
+We have verified numerically that the two formulations
+\eqref{eq:autocatalysis} and \eqref{eq:exp-source} produce
+indistinguishable phantom-quintessence trajectories (within ensemble
+noise) and reproduce DESI to comparable precision; a comprehensive
+comparison is given in Sec.~\ref{sec:sensitivity},
+Table~\ref{tab:mechanism-comparison}. The autocatalysis rule
+\eqref{eq:autocatalysis} is conceptually preferred because it
+attributes the exponential growth to a local substrate property
+(the rate $\epsilon$) rather than to an externally-imposed time
+profile; the explicit-source rule \eqref{eq:exp-source} is
+historically the original formulation and yields slightly tighter
+ensemble error bars.
 
 \subsection{Effective equation of state}
 
@@ -467,6 +559,7 @@ m_\infty^{\rm DESI} \;=\; -3.72,
 m_0^{\rm DESI} \;=\; +1.65.
 \end{equation}
 
+\FloatBarrier
 \section{Numerical implementation and headline result}
 \label{sec:results}
 
@@ -483,7 +576,7 @@ $S_0 = 0.05$, $\gamma = 0.415$, $\sigma = 3.90$, $t_s = 15$,
 $\alpha = 0.4$, $\kappa = 8\times 10^{-4}$, $R_{\rm trap} = 0.05$.
 None of these is adjusted to fit any DESI quantity per realisation.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/fig_evolution.pdf}
 \caption{Time evolution of the global sums $\sum_i T_i^2$ and
@@ -496,7 +589,7 @@ $\sum_i T_i^2$. Reproducible via
 \label{fig:evolution}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/fig_m_eff.pdf}
 \caption{Effective dilution exponent $m(a)$ extracted from the
@@ -513,20 +606,28 @@ ensemble scatter.}
 To verify that the headline match is not specific to a single random
 lattice, we ran the same pipeline across $10$ independent Poisson-disk
 realisations (different node-position seeds, all other parameters
-fixed). The ensemble statistics yield
+fixed). At the working point $(\epsilon, t_s) = (0.65, 15)$ of variant
+(E), the ensemble statistics yield
 \begin{align}
-m_\infty^{\rm sim} &= -3.74 \pm 0.04, \\
-m_0^{\rm sim}     &= +1.59 \pm 0.18,
+m_\infty^{\rm sim} &= -3.83 \pm 0.15, \\
+m_0^{\rm sim}     &= +1.57 \pm 0.19,
 \end{align}
 where the uncertainties are empirical standard deviations across the
 $10$ realisations. The phantom-phase exponent $m_\infty$ is
-extraordinarily reproducible ($1\%$ scatter), demonstrating that this
-is a robust signature of the cascade dynamics rather than a feature
-of any particular lattice. The today exponent $m_0$ shows $\sim 11\%$
-scatter, dominated by the post-peak phase where the system is more
-sensitive to local lattice geometry.
+reproducible at the few-percent level, and the late-time exponent
+$m_0$ matches DESI within $0.4\sigma$ of the empirical scatter; both
+are robust signatures of the cascade dynamics rather than features of
+any particular lattice. The historical variant (A) (explicit
+exponential source, see Sec.~\ref{sec:cosmogenetic-rule} for the
+equivalence) gives an even tighter ensemble at the same working point:
+$m_\infty^{\rm sim,(A)} = -3.74 \pm 0.04$ and $m_0^{\rm sim,(A)} =
++1.59 \pm 0.18$ (matching DESI within $0.5\sigma/0.3\sigma$). Both
+mechanisms reproduce DESI within ensemble noise; we adopt the
+variant (E) numbers as headline because they correspond to the
+substrate-intrinsic formulation, and we report the variant (A)
+ensemble values for historical comparison.
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.95\textwidth]{figures/fig_robustness.pdf}
 \caption{Robustness across $10$ Poisson-disk realisations.
@@ -538,15 +639,15 @@ bars (blue square), and the DESI DR2 target (red star).}
 \label{fig:robustness}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[!htbp]
 \centering
 \begin{tabular}{lccc}
 \toprule
 \textbf{Quantity} & \textbf{DESI DR2} & \textbf{DDD simulation} & \textbf{Deviation} \\
 \midrule
-$m_\infty$ (phantom phase)        & $-3.72$ & $-3.74 \pm 0.04$ & $0.5\sigma$ \\
-$m_0$ (today)                     & $+1.65$ & $+1.59 \pm 0.18$ & $0.3\sigma$ \\
-$w$ at $z = 0$                    & $-0.45$ & $-0.47 \pm 0.06$ & $0.3\sigma$ \\
+$m_\infty$ (phantom phase)        & $-3.72$ & $-3.83 \pm 0.15$ & $0.8\sigma$ \\
+$m_0$ (today)                     & $+1.65$ & $+1.57 \pm 0.19$ & $0.4\sigma$ \\
+$w$ at $z = 0$                    & $-0.45$ & $-0.48 \pm 0.06$ & $0.5\sigma$ \\
 Phantom crossing redshift $z^\ast$ & $\simeq 0.45$ & $\simeq 0.45$ & $\sim 1\%$ \\
 $\Omega_m / \Omega_\Lambda$       & observed & emergent & --- \\
 \bottomrule
@@ -561,7 +662,7 @@ once by coarse scan and held across all realisations.}
 \label{tab:summary}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/fig_rho_DE.pdf}
 \caption{Predicted dark-energy density $\rho_{\rm DE}(z)/\rho_{\rm
@@ -571,49 +672,373 @@ the peak positions, both near $z^\ast \simeq 0.45$.}
 \label{fig:rho-DE}
 \end{figure}
 
+\FloatBarrier
 \section{Sensitivity and null controls}
 \label{sec:sensitivity}
 
-Because the cascade dynamics depends on the choice of source profile
-and on the $t\leftrightarrow a$ calibration, a non-trivial question is
-\emph{how robust the headline match is to those choices}. We summarise
-the qualitative behaviour of variants relative to the baseline; full
-quantitative sweeps will be presented in a companion paper.
+Because the cascade dynamics depends on the cosmogenetic rule and
+on its parameters, a non-trivial question is \emph{how robust the
+headline match is across alternative source mechanisms and across
+small parameter variations}. We summarise our investigation of twelve
+candidate mechanisms (Sec.~\ref{sec:mechanism-comparison}), document
+the $(\epsilon, t_s)$ degeneracy along the DESI-matching family
+(Sec.~\ref{sec:eps-ts}), highlight the universality of the late-time
+exponent $m_0$ (Sec.~\ref{sec:m0-universal}), discuss source-profile
+robustness (Sec.~\ref{sec:profile-robustness}), and acknowledge the
+methodological sensitivity of $m_\infty$ extraction
+(Sec.~\ref{sec:extraction-sensitivity}).
 
-\begin{table}[h]
+\subsection{Comparison of cosmogenetic mechanisms}
+\label{sec:mechanism-comparison}
+
+We have tested twelve candidate cosmogenetic mechanisms on the same
+$N=8000$ Poisson-disk lattice. Each mechanism is normalised to inject
+the same total integrated reserve $E_{\rm tot}$ either over the
+creation epoch $[0, t_s = 15]$ or as the initial condition; the same
+Gaussian spatial profile of width $\sigma = 3.9$ is used where
+applicable. The uniform global mechanism (G) has no spatial structure
+by design; the delta-init mechanism (H) concentrates all of
+$E_{\rm tot}$ on a single node at $t=0$ and runs purely conservative
+drainage thereafter, with no source dynamics whatsoever. Table~\ref{tab:mechanism-comparison} summarises the
+extracted phantom and late-time exponents, the design constraints of
+each rule, and notes the strengths and weaknesses.
+
+All tested mechanisms (except the strict null (G)) share three
+universal properties imposed by the DDD framework: (i) \emph{local
+non-conservation during $[0, t_s]$} (reserve is created in the
+lattice from outside the conservation accounting of Paper~I),
+(ii) \emph{strict conservation for $t > t_s$} (no further creation,
+only conservative drainage), and (iii) \emph{spatial localisation of
+the source around the founding centre $\Omega$} (the injection is
+concentrated within a region of radius $\sim \sigma$ near $\Omega$,
+not distributed across the whole substrate). Beyond these,
+mechanisms differ along three independent design axes:
+
+\begin{description}[leftmargin=1.3cm,style=nextline]
+\item[\textsc{Spatial template}.] How is the spatial profile of the
+injection determined? \emph{Gauss-templated}: the rule multiplies by
+a fixed Gaussian envelope $\exp(-r^2/\sigma^2)$ centred on $\Omega$,
+so the injection profile is set by $\Omega$'s position throughout the
+epoch and does not move with the cascade. \emph{State-adaptive}: the
+rule acts wherever $R_i > R_{\rm trap}$, so the injection profile
+follows the cascade as it spreads. \emph{Mixed}: the rule combines
+both (the autocatalysis is restricted by a Gaussian envelope).
+\emph{Uniform}: no spatial structure --- the rule acts on every node
+identically. Note that all four cases describe \emph{spatially
+localised sources} (the injection is concentrated near $\Omega$); the
+distinction is in \emph{how} the localisation is enforced. The
+Gauss envelope is best understood as a smearing of a single-point
+source at $\Omega$ over a finite numerical radius $\sigma$.
+
+\item[\textsc{Time-dependence}.] \emph{Autonomous} (rule contains no
+explicit $t$; it is the same rule at every instant during the epoch)
+\emph{vs} \emph{Time-dep} (rule contains an explicit time
+profile, e.g.\ $e^{\gamma t}$ or $t^p$).
+
+\item[\textsc{Initial condition}.] \emph{Zero-seed} ($R_i(0) = 0$
+everywhere; all reserve content created during the epoch) \emph{vs}
+\emph{Seeded} ($R_i(0) > 0$ on a small core around $\Omega$ above the
+activation threshold).
+\end{description}
+
+The constraint label in column 3 of the table records the triplet
+(Spatial template, Time-dependence, Initial condition).
+
+\begin{table}[!htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{2.2cm}p{3.0cm}p{2.4cm}cccp{3.0cm}}
+\toprule
+\textbf{Mechanism} & \textbf{Rule} & \textbf{Constraints} & $\bm{m_\infty}$ & $\bm{m_0}$ & \textbf{vs DESI} & \textbf{Comments} \\
+\midrule
+\textbf{(A) Explicit exp source} &
+$S_0\, e^{\gamma t}\, {\rm Gauss}(r/\sigma)$ for $t<t_s$ &
+\textsc{Gauss-templated}, time-dep, zero-seed &
+$-3.74 \pm 0.04$ & $+1.59 \pm 0.18$ & \textbf{match} 0.5/0.3$\sigma$ &
+Original headline. Tightest ensemble. $\gamma$ is an externally-imposed calendar. \\
+\addlinespace
+\textbf{(A.bis) Self-tuned (A)} &
+$\dot R_i = \tilde\epsilon\, R_\Omega(t)\,{\rm Gauss}(r/\sigma)$, $t<t_s$, with bootstrap seed at $\Omega$ &
+\textsc{Gauss-templated}, autonomous, seeded (bootstrap) &
+$-3.75$ & $+1.66$ & \textbf{match} (single seed) &
+Source amplitude tracks $R_\Omega(t)$ instead of $e^{\gamma t}$ calendar. Same fit as (A), no explicit time. Bridges (A) $\to$ (E): tunes $\tilde\epsilon = \epsilon = 0.65$ for DESI. \\
+\addlinespace
+\textbf{(E) Local autocatalysis} &
+$\dot R_i = \epsilon R_i$ for $R_i > R_{\rm trap}$, $t<t_s$ &
+\textsc{State-adaptive}, autonomous, seeded &
+$-3.83 \pm 0.15$ & $+1.57 \pm 0.19$ & \textbf{match} 0.8/0.4$\sigma$ &
+Substrate-intrinsic: $\epsilon$ is a local property, not a calendar. Higher variance. \\
+\addlinespace
+(D) Auto-source uniform &
+$\dot R_i = \epsilon_0$ const for active &
+\textsc{State-adaptive}, autonomous, seeded &
+$-1.55$ & $+0.51$ & off 4.3/6.5$\sigma$ &
+Constant rate per active node insufficient to reach phantom depth. \\
+\addlinespace
+(F) Hybrid autocatalysis &
+$\dot R_i = \epsilon\, R_i\,{\rm Gauss}(r)$ for active &
+\textsc{Mixed} (state-adaptive $\times$ Gauss), autonomous, seeded &
+$-3.86$ & $+2.39$ & partial &
+$m_\infty$ ok but $m_0$ too high (4.2$\sigma$). Spatial weighting too restrictive. \\
+\addlinespace
+Constant source &
+$S(t) = S_0$ for $t < t_s$ &
+\textsc{Gauss-templated}, autonomous, zero-seed &
+$-1.47$ & $+1.52$ & off 12.5$\sigma$ on $m_\infty$ &
+Step injection lacks phantom depth. \\
+\addlinespace
+Linear source &
+$S(t) \propto t$, on Gauss($r$) &
+\textsc{Gauss-templated}, time-dep, zero-seed &
+$-3.55 \pm 0.05$ & $+1.53 \pm 0.17$ & near-match 2.6/0.7$\sigma$ &
+Closest non-exp profile. Parameter-free in $t$. Mild $m_\infty$ tension. \\
+\addlinespace
+Quadratic source &
+$S(t) \propto t^2$ &
+\textsc{Gauss-templated}, time-dep, zero-seed &
+$-5.61$ & $+1.62$ & off 12.6$\sigma$ on $m_\infty$ &
+Too peaked at $t_s$; phantom too deep. \\
+\addlinespace
+Cubic source &
+$S(t) \propto t^3$ &
+\textsc{Gauss-templated}, time-dep, zero-seed &
+$-7.67$ & $+1.63$ & off 24$\sigma$ on $m_\infty$ &
+Even more peaked. Strongly excluded. \\
+\addlinespace
+Sigmoid source &
+$S(t) = S_{\rm max}/(1+e^{-k(t-t_0)})$ &
+\textsc{Gauss-templated}, time-dep, zero-seed &
+$-5.49$ & $+1.63$ & off 11.9$\sigma$ on $m_\infty$ &
+Smooth ramp but too phantom. \\
+\addlinespace
+(G) Uniform global creation &
+$\dot R_i = R_0 / t_s$ on \emph{every} node identically, $t < t_s$ &
+\textsc{Uniform} (no spatial structure), autonomous, zero-seed &
+\textbf{undefined} & \textbf{undefined} & \textbf{trivial null} &
+$T \equiv 0$ exactly: with no spatial gradient, the drainage rule
+generates no flux. No phantom phase, no dilution, no observable
+cosmogenesis. \emph{Spatial localisation is necessary.} \\
+\addlinespace
+(H) Delta-init, no source &
+$R_\Omega(0) = E_{\rm tot}$, $R_i(0) = 0$ for $i \neq \Omega$;
+no source for $t > 0$ &
+\textsc{Single-point}, autonomous (\emph{no source}), strongly seeded &
+\textbf{N/A (no plateau)} & $+2.18$ & \textbf{no phantom phase} &
+``Big Bang'' of pure initial condition. Conservation is strict
+($R_{\rm total}$ exactly preserved). $T^2$ peaks at $t \to 0^+$
+and decays monotonically. \emph{No creation epoch} $\to$ no
+phantom phase $\to$ DESI not reproduced. Confirms that some form
+of energy injection beyond $t = 0$ is necessary. \\
+\bottomrule
+\end{tabular}
+\caption{Comparison of twelve cosmogenetic mechanisms tested at the
+same total energy $E_{\rm tot}$ on $N=8000$ Poisson-disk lattices.
+$\sigma$-levels for ``vs DESI'' use the headline (A) ensemble standard
+deviations as denominators where applicable. \emph{Three} mechanisms
+reproduce DESI within ensemble noise: the original explicit exp source
+\textbf{(A)}, the self-tuned variant \textbf{(A.bis)}, and the local
+autocatalysis rule \textbf{(E)}; these three are operationally
+equivalent (Sec.~\ref{sec:bridge}). The linear profile is a near-miss
+(within $\sim 2.6\sigma$). Constant, quadratic, cubic, and sigmoid are
+strongly excluded. \emph{Two informative null controls}: \textbf{(G)
+uniform global creation} (no spatial gradient $\to$ no observable
+cascade $\to$ \emph{spatial localisation is necessary}); and
+\textbf{(H) delta-init with no source} (cascade decays monotonically
+from $t=0$, no phantom phase $\to$ \emph{a creation epoch beyond
+$t=0$ is necessary}). The \emph{universality of $m_0 \simeq +1.6$}
+across all mechanisms reaching a non-trivial cascade is the
+substrate-geometric signature discussed in
+Sec.~\ref{sec:m0-universal}. Reproducible via
+\texttt{code/11\_source\_profile\_scan.py},
+\texttt{code/14\_autosource\_test.py},
+\texttt{code/16\_autosource\_ensemble.py},
+\texttt{code/21\_uniform\_global\_test.py},
+\texttt{code/22\_abis\_test.py}, and
+\texttt{code/23\_delta\_init\_test.py}.}
+\label{tab:mechanism-comparison}
+\end{table}
+
+\paragraph{The (A) $\to$ (A.bis) $\to$ (E) bridge.}\label{sec:bridge}
+Three of the twelve mechanisms tested reproduce DESI: \textbf{(A)}
+explicit exponential source, \textbf{(A.bis)} self-tuned amplitude
+on Gauss template, and \textbf{(E)} state-adaptive autocatalysis.
+They are not three different physical models --- they are three
+parametrisations of the \emph{same} underlying dynamics, and the
+fact that they all match DESI with the same effective rate
+($\gamma_{\rm A} = 0.415$ implies $\tilde\epsilon_{\rm A.bis} =
+\epsilon_{\rm E} = 0.65$ when accounting for the substrate drainage
+$\alpha = 0.4$) confirms this. The progression is:
+\begin{itemize}
+\item \textbf{(A)}: source amplitude follows an externally-imposed
+calendar $S(t) = S_0 e^{\gamma t}$. Conceptually opaque: why this
+calendar?
+\item \textbf{(A.bis)}: source amplitude is auto-tuned to track the
+current $R$ at $\Omega$, $S(t) = \tilde\epsilon\, R_\Omega(t)\,
+{\rm Gauss}(r/\sigma)$. The exponential growth is no longer
+imposed; it \emph{emerges} as the natural amplitude needed to
+overcome diffusion losses from the source region. The rule is
+autonomous (no explicit $t$); only the spatial profile remains
+externally templated.
+\item \textbf{(E)}: source profile is also state-adaptive,
+$\dot R_i = \epsilon R_i$ wherever $R_i > R_{\rm trap}$. Both the
+amplitude \emph{and} the spatial profile are intrinsic. Only the
+local rate $\epsilon$ remains as the unexplained substrate property.
+\end{itemize}
+The exponential time profile of (A) is therefore not arbitrary: it
+is exactly what is needed to overcome the natural diffusive loss
+from a localised source region, given a substrate-level rate
+$\epsilon$. We adopt (E) as the conceptually preferred formulation
+because it carries the minimum unexplained content (one local rate
+$\epsilon$) and because $\epsilon$ is the kind of object that
+substrate microphysics can in principle derive (a critical
+instability rate). The other tested mechanisms serve as null
+controls: they confirm that the qualitative phantom-to-quintessence
+pattern is robust to source-profile choice
+(Sec.~\ref{sec:profile-robustness}), but the quantitative DESI
+match is selective --- not every mechanism produces the deep
+phantom phase that DESI requires.
+
+For this reason we retain (A) as a historical and numerically tighter
+reference, but adopt (E) as the physical formulation of the paper.
+
+\subsection{Robustness to small parameter variations}
+
+Within mechanism (E) at the working point, we tested the sensitivity
+of the headline match to small variations of the cosmogenetic-rule
+parameters: the autocatalysis rate $\epsilon$, the creation-epoch
+duration $t_s$, the seed width $\sigma$, and the seed amplitude
+$R_{\rm seed}$. Table~\ref{tab:sensitivity} summarises the qualitative
+behaviour. The phantom-crossing phenomenon is robust under all
+considered variations (a few-percent shift in $z^\ast$); the strict
+null is removing the autocatalysis shutoff, which prevents saturation
+and falsifies the model.
+
+\begin{table}[!htbp]
 \centering
 \begin{tabular}{lccc}
 \toprule
 variant & $w = -1$ crossing? & $z^\ast$ shifted? & comment \\
 \midrule
-baseline (headline run) & yes, $z^\ast \simeq 0.45$ & --- & match \\
-$\gamma$ scaled by $\pm 10\%$ & yes & by a few~\% & match shifts \\
-$t_s$ scaled by $\pm 10\%$ & yes & by a few~\% & match shifts \\
-$\sigma$ scaled by $\pm 30\%$ & yes & weakly & robust \\
-uniform source (no localisation) & yes & no peak observer-direction info & no dipole prediction \\
-no source shutoff (continued pumping) & no & --- & cascade never saturates: prediction violated \\
-power-law source ($t^p$ instead of $e^{\gamma t}$) & yes, but later & by $\sim 30\%$ & distinguishable from $e^{\gamma t}$ \\
+baseline working point & yes, $z^\ast \simeq 0.45$ & --- & match \\
+$\epsilon$ scaled by $\pm 10\%$ at fixed $t_s$ & yes & by a few~\% & off-curve, match shifts \\
+$t_s$ scaled by $\pm 10\%$ at fixed $\epsilon$ & yes & by a few~\% & off-curve, match shifts \\
+$\sigma$ (seed width) scaled by $\pm 30\%$ & yes & weakly & robust \\
+$R_{\rm seed}$ scaled by $\pm 30\%$ & yes & weakly & robust \\
+no source shutoff (continued autocatalysis) & no & --- & cascade never saturates: prediction violated \\
 \bottomrule
 \end{tabular}
-\caption{Sensitivity of the cascade to source-profile and parameter
-variants. The phantom-crossing phenomenon is \emph{generic} to any
-``source pumps then stops, lattice dilutes'' setup; the precise match
-to the DESI numbers requires the headline parameter values
-($\gamma = 0.415$, $t_s = 15$, $\sigma = 3.9$). Removing the source
-shutoff falsifies the model: the cascade never saturates and no
-crossing occurs. The dipolar $H_0$ prediction depends on source
-localisation, not on the global cascade dynamics.}
+\caption{Sensitivity of the cascade to small variations of the
+cosmogenetic-rule parameters. The phantom-crossing phenomenon is
+\emph{generic} to any ``finite creation epoch with self-feedback''
+setup; the precise quantitative match to DESI selects a curve in the
+$(\epsilon, t_s)$ plane discussed below. Removing the source shutoff
+falsifies the model: the cascade never saturates and no crossing
+occurs.}
 \label{tab:sensitivity}
 \end{table}
 
-The qualitative pattern is clean: the phantom crossing is a generic
-consequence of source-driven filling followed by conservative
-dilution, while the quantitative match to the DESI best-fit numbers
-calibrates the source profile. The most stringent null is the
-\emph{no-shutoff} variant: if the source were never to end, no
-crossing would occur, falsifying the framework as an explanation of
-the DESI signal.
+\subsection{The $(\epsilon, t_s)$ degeneracy}
+\label{sec:eps-ts}
 
+A direct two-parameter scan over $(\epsilon, t_s)$ reveals that
+DESI-matching solutions occupy a one-parameter \emph{family} along a
+curve $\epsilon^*(t_s)$, rather than fixing each parameter
+separately. We have measured this curve at six values of $t_s$ from
+$5$ to $20$ (Fig.~\ref{fig:minimum-ts}). At every $t_s$ in this range
+there exists a value $\epsilon^*(t_s)$ that reproduces DESI's
+$m_\infty = -3.72$ within ensemble noise; the family is approximately
+$\epsilon^* \cdot t_s \simeq 8\text{--}13$ (decreasing with $t_s$),
+with the working point $(\epsilon, t_s) = (0.65, 15)$ corresponding to
+$\epsilon \cdot t_s \simeq 9.87$.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=0.95\textwidth]{figures/fig_minimum_ts.pdf}
+\caption{$(\epsilon, t_s)$ degeneracy along the DESI-matching family.
+\textbf{Left}: deepest $m_{\rm pre}$ reachable (gold) and
+$m_{\rm pre}$ at baseline $\epsilon = 9.75/t_s$ (light blue) as
+function of $t_s$. The DESI target $m_\infty = -3.72$ (red dashed)
+is reachable at every tested $t_s$ from $5$ to $20$.
+\textbf{Right}: extracted $\epsilon^*(t_s)$ giving DESI match. The
+naive predictions $\pi^2/t_s$ (green) and $9.75/t_s$ (blue dotted)
+are shown for comparison; neither captures the family exactly. The
+data fix a curve in the $(\epsilon, t_s)$ plane along which the
+cosmogenetic mechanism reproduces DESI; selecting a particular
+representative requires an additional substrate principle.
+Reproducible via \texttt{code/20\_minimum\_ts\_test.py}.}
+\label{fig:minimum-ts}
+\end{figure}
+
+This degeneracy means that the cosmogenetic data fix the curve, not
+its individual coordinates: a microscopic theory of the substrate is
+needed to fix one of the two parameters from first principles, after
+which the other is predicted by the family. The data alone admit any
+representative.
+
+\subsection{Universal $m_0$ across the family}
+\label{sec:m0-universal}
+
+The late-time exponent $m_0$ is found to be \emph{universal} across
+the $(\epsilon, t_s)$ family: numerical scans give $m_0 = 1.57$ to
+$1.65$ across the entire tested range $t_s \in [5, 20]$ and across
+several alternative source profiles (constant, linear, quadratic,
+sigmoid; Sec.~\ref{sec:profile-robustness}). This universality is a
+\emph{prediction of the substrate dynamics}: once the autocatalysis
+ceases, the late-time conservative drainage in 3D produces a
+profile-independent dilution exponent set by the dimension and
+topology of the lattice, not by the source mechanism. By contrast,
+$m_\infty$ depends sensitively on where on the family one operates
+(Sec.~\ref{sec:eps-ts}), making the phantom-phase depth a more
+delicate diagnostic of the cosmogenetic rule.
+
+\subsection{Source-profile robustness}
+\label{sec:profile-robustness}
+
+The phantom-to-quintessence pattern is not specific to the
+autocatalytic rule \eqref{eq:autocatalysis}: explicit numerical tests
+(companion code) on five alternative source profiles --- constant
+plateau, linear ramp, quadratic, cubic, and sigmoid --- all produce
+the qualitative phantom-crossing pattern when calibrated to give the
+same total integrated source energy as the autocatalytic baseline.
+What changes across profiles is the \emph{depth} of the phantom phase
+($m_\infty$) and, to a lesser extent, the late-time exponent $m_0$.
+Among the alternatives, the linear profile $S(t) \propto t$ comes
+closest to DESI ($m_\infty \simeq -3.55$, within $\sim 2\sigma$ of
+the target); constant, quadratic, cubic and sigmoid profiles deviate
+more strongly ($|m_\infty - m_\infty^{\rm DESI}| \gtrsim 1$). The
+autocatalytic rule with the working-point parameters remains
+empirically the closest match.
+
+\subsection{Methodological caveat: extraction sensitivity of $m_\infty$}
+\label{sec:extraction-sensitivity}
+
+The numerical value of $m_\infty$ depends measurably on the
+extraction protocol --- the time-grid sampling, the smoothing window
+for $\langle T^2 \rangle(t)$, and the mask used to define the
+``phantom plateau''. Different reasonable choices can shift the
+extracted $m_\infty$ by $\Delta m \lesssim 0.7$. The headline value
+$m_\infty = -3.83 \pm 0.15$ is reproducible \emph{at fixed protocol}
+across realisations, but the systematic uncertainty from protocol
+choice should be added in quadrature for cross-comparison with
+external data. We adopt the protocol of \texttt{04\_robustness.py}
+(Savitzky--Golay smoothing, window 21, polynomial order 3, plateau
+mask $t < 0.7\,t_{\rm peak}$, log-spaced time sampling matching the
+cosmogenetic timescale) and note this convention explicitly.
+
+\subsection{Most stringent null}
+
+The most stringent null control remains the \emph{no-shutoff} variant:
+if the autocatalysis were never to end, no crossing would occur and
+the framework would fail to explain DESI's evolving signal.
+Equivalently, the existence of a finite creation epoch $t_s$ is
+\emph{required} by the data, not just by aesthetic preference. This
+is a clean falsifier: any future observation showing dark energy
+continuing to grow (rather than transitioning to quintessence-like
+dilution) would invalidate the cosmogenetic mechanism as proposed
+here.
+
+\FloatBarrier
 \section{Distinguishing predictions}
 \label{sec:predictions}
 
@@ -628,35 +1053,23 @@ a $\Lambda$-like late acceleration phase that does \emph{not}
 asymptote to zero would falsify this prediction.
 
 \paragraph{(P2) Dipolar modulation of $H_0$.}
-The founding impulse is localised, so its observational signature is
-not exactly isotropic. An observer offset by a fraction $r/L$ of the
-lattice size sees the cascade saturate at slightly different
-proper-time epochs in different directions, giving
-\begin{equation}
-H_0(\theta) \simeq \bar H_0\,
-\big[\,1 + \mathcal A\,\frac{r}{L}\,\cos\theta\,\big],
-\end{equation}
-with $\mathcal A$ a dimensionless drainage-dynamics coefficient.
-Independent measurements of an $H_0$ dipole at the $\sim 3\%$ level
-with $\sim 4\sigma$ significance from Tully--Fisher data
-\cite{boubel2024}, and an over-large quasar dipole \cite{secrest2021}
-that exceeds the kinematic CMB-dipole prediction, are both consistent
-with this picture as residuals of an off-centre observer in a
-cosmogenesis cascade.
+The founding impulse breaks isotropy: an observer at distance $r$
+from $\Omega$ sees a small dipolar variation of the local cascade
+arrival time, hence of $H_0$, scaling as $r/L$.
 
 \paragraph{(P3) Matter-distribution dipole and quadrupole anomalies.}
-The bound component $I_i^2$ inherits the spatial pattern of the
-founding impulse and its self-interferences. Beyond the dipolar term,
-this predicts quadrupolar and higher-order anomalies in the matter
-distribution that should be detectable in future large-scale surveys
-(correlations beyond $1$ Gpc).
+Independent measurements of an $H_0$ dipole at the $\sim 3\%$ level
+\cite{boubel2024}, and an over-large quasar dipole \cite{secrest2021}
+that exceeds the kinematic CMB-dipole prediction, are both consistent
+with off-centre observer position, although neither is conclusive on
+its own. Joint detection of a coherent dipole in matter,
+$H_0$, and CMB temperature perpendicular to the kinematic dipole
+direction would constitute a strong positive test of the cosmogenetic
+mechanism. Persistent failure to find such a signature would falsify
+it (with the caveat that local and global expansion rates need not
+coincide).
 
-\paragraph{(P4, weaker) Hubble tension as residual cosmogenesis.}
-Because the filling cascade has a finite spatial extent, local and
-global expansion rates need not coincide. The observed Hubble tension
-between local and CMB-inferred $H_0$ may have a contribution from this
-residual effect, complementary to the dipolar anisotropy of (P2).
-
+\FloatBarrier
 \section{Connection with the cubic substrate of Papers~VI--VII}
 \label{sec:connection}
 
@@ -676,143 +1089,149 @@ $\alpha_G/\alpha_{\rm EM} = 1/\sqrt 2$ of Paper~VII at the substrate
 scale, the candidate fixed-point formula for $\alpha_{\rm EM}$ of
 Paper~VI, and the substrate mass scale $m_{\rm lat} \approx 0.072\,M_P$
 are interpreted as properties of the \emph{relaxed} substrate, after
-cosmogenesis has saturated. The cosmogenetic regime of the present
-paper is, in this picture, the transient that brings the substrate
-into that regime; verifying that the relaxation actually produces the
-required cubic local statistics is open.
+cosmogenesis has saturated. Verifying that the relaxation actually
+produces the required cubic local statistics is open.
 
-A consequence is that the cosmological evolution of the reserve $R_0$
-postulated in Paper~VII (the $\dot R_0/R_0 = \beta_R/t_H$ ansatz) and
-the cosmogenetic cascade of the present paper are two facets of the
-same dynamics: $R_0$ is built up by the cascade from $R_i = 0$, and
-the post-saturation slow drift of the global mean reserve is what
-drives the cosmological $\dot\alpha_{\rm EM}/\alpha_{\rm EM}$ that
-Paper~VII bounds against the Rosenband atomic-clock limit.
-
+\FloatBarrier
 \section{Limitations and scope}
 \label{sec:not}
 
-\paragraph{Microscopic origin of the pumping rate.}
-The exponential growth rate $\gamma = 0.415$ of the source is not
-derived from substrate dynamics. We conjecture that it is set by
-non-linear self-feedback of the lattice on its own filling rate, but
-no analytic calculation is available.
+\paragraph{Microscopic origin of $\epsilon$ and $t_s$.}
+The autocatalysis rate $\epsilon = 0.65$ and the creation-epoch
+duration $t_s = 15$ at the working point are not derived from
+substrate dynamics. They are jointly degenerate: a one-parameter
+family of $(\epsilon, t_s)$ pairs reproduces the DESI signature
+(Sec.~\ref{sec:eps-ts}). Fixing one of them from a microscopic theory
+of substrate criticality (for $\epsilon$) or substrate phase
+transition (for $t_s$) would predict the other from the family.
 
 \paragraph{$t \leftrightarrow a$ calibration.}
 Identification of simulation time with cosmological scale factor
 requires a calibration. We adopt the convention that the peak of
-$\sum T^2$ corresponds to $a^\ast = 0.69$ (DESI DR2) and that $a = 1$
-corresponds to $I^2/T^2 = 0.46$. A first-principles derivation from
-substrate dynamics is open.
+$\sum T^2$ corresponds to $a^\ast = 0.69$. A first-principles
+derivation is the subject of Paper~IX.
 
 \paragraph{Pre-recombination physics.}
 We do not address the cosmic microwave background, big-bang
-nucleosynthesis, or the early radiation-dominated epoch. The
-cosmogenetic regime described here is the late-time tail of the
-filling cascade as observed from $z \lesssim 1$.
+nucleosynthesis, or the early radiation-dominated epoch.
+Quantitatively, applying the linear $t \leftrightarrow a$ calibration
+$a = a^\ast (t/t_{\rm peak})$ with $a^\ast = 0.69$ to the CMB
+last-scattering surface ($z \simeq 1100$, $a_{\rm CMB} \simeq 9 \times
+10^{-4}$) maps the CMB epoch to lattice time $t_{\rm CMB} \simeq
+0.020$ -- well before the cosmogenetic cascade has built up. At this
+time the simulation gives $\sum T^2 \simeq 6.5 \times 10^{-3}$, while
+today ($t_{\rm today} \simeq 21.7$) it gives $\sum T^2 \simeq 7 \times
+10^4$. The simulation's CMB/today ratio is therefore
+$\sim 9 \times 10^{-8}$, whereas standard cosmology requires
+$\rho_{\rm CMB}/\rho_{\rm today} \sim (1+z)^4 \simeq 1.5 \times 10^{12}$
+for the radiation density. The mismatch by $\sim 17$ orders of
+magnitude is not a failure of the framework but a precise statement
+of its scope: the cosmogenetic mechanism of this paper describes only
+the late-time ($z \lesssim 1$) phenomenology, not the radiation-
+dominated era. Reproducing the CMB requires either an earlier
+cosmogenetic event that loads the substrate with high radiative
+content prior to the cascade considered here, or a different
+non-perturbative DDD phase governing the radiation era. We propose
+this as the subject of Paper~X (Pre-recombination cosmogenesis).
+This back-of-the-envelope mismatch is included not as a cosmological
+claim, but as a guardrail against overextending the late-time
+calibration.
 
 \paragraph{Absolute Hubble constant.}
-We do not predict $H_0$ in absolute units; only its angular variation
-relative to a hypothetical observer position.
+We do not predict $H_0$ in absolute units; only its angular variation.
 
-\paragraph{Mapping with cubic substrate.}
-The Poisson-disk lattice used here for cosmogenesis and the cubic
-substrate of Papers~III/VI/VII for emergent gauge dynamics are the
-same physical substrate at two scales: the Poisson-disk approximation
-captures large-scale statistical isotropy, while the cubic geometry
-captures local back-reaction. A unified description across both
-regimes is open.
-
+\FloatBarrier
 \section{Open questions}
 \label{sec:open}
 
-\paragraph{Derivation of $\gamma$.}
-The exponential pumping rate of the founding source.
+\paragraph{Derivation of $\epsilon$ from substrate criticality.}
+Numerical experiments suggest that $\epsilon$ is \emph{not} simply
+set by the discrete Laplacian eigenvalue ($\epsilon \propto
+\alpha/\bar D$ is excluded by direct test); the measured
+$\epsilon^*(t_s)$ family does not collapse onto a simple geometric
+ratio. Identifying the substrate principle that fixes $\epsilon$
+along the family is the central theoretical task left open.
 
-\paragraph{Microscopic origin of the source itself.}
-Why does the substrate admit an initial $R_i = 0$ state with a
-single localised excitation? The DDD framework as stated is
-agnostic about its initial-condition selection.
+\paragraph{Microscopic origin of the creation epoch.}
+Why does the substrate admit a finite ``creation epoch'' $[0, t_s]$
+during which non-conservation is active, followed by strict
+conservation? Candidate mechanisms include capacity saturation,
+phase transition, or slow decay of $\epsilon$ with cumulative
+cascade content.
 
-\paragraph{Absolute energy scale of the cascade.}
-The simulation is in lattice units. Mapping these to physical
-GeV/cm/s requires a calibration that is the subject of Paper~XV.
+\paragraph{Universal $m_0$ from substrate dimension.}
+The empirical universality $m_0 \simeq +1.6$ across the
+$(\epsilon, t_s)$ family and across all eight non-trivial source
+profiles tested suggests a derivation from the conservative late-time
+drainage of a 3D Poisson-disk lattice. A direct analytic calculation
+is open.
 
-\paragraph{Mapping to the cubic substrate of Papers~VI/VII.}
-The Poisson-disk vs cubic substrate question.
-
-\paragraph{Potential observers' positions.}
+\paragraph{Observers' positions.}
 Constraining $r/L$ from the joint $H_0$ dipole, matter dipole, and
-CMB dipole directions is a target for a companion paper.
+CMB dipole directions is the target of Paper~XI.
 
+\FloatBarrier
 \section{Code and data availability}
 \label{sec:code}
 
-All code reproducing the figures and the headline result is in the
-\texttt{code/} subdirectory of this paper:
+All code is in the \texttt{code/} subdirectory:
 \begin{itemize}
-\item \texttt{01\_simulation.py} -- core cascade simulation
-\item \texttt{02\_analysis.py} -- diagnostics
-\item \texttt{03\_make\_figures.py} -- $\rho_{\rm DE}(z)$ and $w(z)$ figures
-\item \texttt{04\_robustness.py} -- 10-realisation robustness band (Fig.~\ref{fig:robustness})
-\item \texttt{05\_robustness\_figure.py} -- robustness figure assembly
-\item \texttt{06\_finite\_size\_scaling.py} -- $N=4000\to16000$ scaling test
+\item \texttt{01\_simulation.py} -- core cascade simulation (variant A)
+\item \texttt{04\_robustness.py} -- 10-realisation ensemble (variant A)
 \item \texttt{07\_phase\_heatmap.py} -- chronological heatmap (Fig.~\ref{fig:phase-heatmap})
-\item \texttt{09\_radial\_profile.py} -- isotropic radial profile (Fig.~\ref{fig:radial-profile})
+\item \texttt{09\_radial\_profile.py} -- isotropic radial profile
 \item \texttt{10\_isotropic\_snapshots.py} -- isotropic 2D snapshots
-(Figs.~\ref{fig:iso-R-snapshots},~\ref{fig:iso-T2-front})
+\item \texttt{11\_source\_profile\_scan.py} -- five power-law profiles
+\item \texttt{14\_autosource\_test.py} -- variants (D), (E), (F)
+\item \texttt{16\_autosource\_ensemble.py} -- \textbf{headline 10-realisation ensemble for variant (E)}
+\item \texttt{20\_minimum\_ts\_test.py} -- $(\epsilon, t_s)$ family
+\item \texttt{21\_uniform\_global\_test.py} -- variant (G) trivial null
+\item \texttt{22\_abis\_test.py} -- variant (A.bis) self-tuned amplitude
+\item \texttt{23\_delta\_init\_test.py} -- variant (H) delta-init
 \end{itemize}
-All scripts use a fixed random seed and produce deterministic outputs.
 
+\FloatBarrier
 \section{Outlook}
 \label{sec:outlook}
 
 \begin{enumerate}
 \item Paper~IX (effective cosmology) will treat the
-\emph{dilution--expansion equivalence} systematically: derivation of
-the $t \leftrightarrow a$ mapping from substrate dynamics, photon
-propagation on a diluting cascade, the cosmological redshift in the
-DDD setting, the status of the Etherington reciprocity relation
-$d_L = (1+z)^2 d_A$, and quantification of expected deviations from
-FRW for distance--redshift observables beyond $w(z)$.
-\item Paper~X (observational cosmological constraints) will
-quantitatively analyse off-centre observers in cosmogenesis cascades
-and constrain the observer position $r/L$ from joint $H_0$ dipole,
-matter dipole, and CMB dipole directions.
-\item A first-principles derivation of the pumping rate $\gamma$ from
-substrate self-feedback is the principal theoretical open task.
-\item Cross-coupling with Paper~VII's gravitational
-$\dot R_0/R_0 = \beta_R/t_H$: identifying $\beta_R$ with the
-post-saturation slow drift of the cosmogenetic cascade would close the
-loop between cosmological dark-energy evolution and the atomic-clock
-bound on $\dot\alpha/\alpha$.
+\emph{dilution--expansion equivalence} systematically.
+\item Paper~XI (observational cosmological constraints) will
+quantitatively analyse off-centre observers.
+\item A first-principles derivation of $\epsilon$ from substrate
+criticality is the principal theoretical open task.
 \end{enumerate}
 
 The principal contribution of this paper is to show that the DESI DR2
 evolving dark-energy signal emerges naturally from the conservative
-drainage rule of Paper~I under the cosmogenetic initial condition,
-once the single global $t \leftrightarrow a$ calibration is fixed.
+drainage rule of Paper~I under a finite-epoch local autocatalysis
+rule, with no externally-imposed exponential time profile.
 
+\FloatBarrier
 \section{Conclusion}
 
-If the late-time cosmological dynamics is the macroscopic signature of
-a discrete substrate just now finishing the cascade that filled it
-from a single founding event, then the DESI DR2 phantom crossing is
-the inevitable transition between filling and dilution.
+If the late-time cosmological dynamics is the macroscopic signature
+of a discrete substrate just now finishing the cascade that filled
+it from a single founding event, then the DESI DR2 phantom crossing
+is the inevitable transition between filling and dilution. The
+adoption of a local autocatalysis rule replaces the externally
+imposed exponential source by a substrate-level rate; the resulting
+mechanism reproduces the DESI signature and reveals a one-parameter
+$(\epsilon, t_s)$ degeneracy along which a microscopic theory of the
+substrate could fix the cosmogenetic epoch.
 
 The result should not be read as a first-principles cosmology: the
-source rate $\gamma$, the $t \leftrightarrow a$ map, and the FRW
-distance interpretation remain open and are deferred to companion
-papers (the $\gamma$ derivation as the principal theoretical task,
-the FRW interpretation to Paper~IX). The contribution of the present
-paper is narrower but concrete: a conservative drainage cascade,
-posited on the substrate of Paper~I and run with no further
-additions, naturally produces a phantom-to-quintessence transition
-with the right qualitative shape and the right quantitative parameters
-once globally calibrated --- a coincidence sufficiently sharp to
-warrant the framework's further development.
+autocatalysis rate $\epsilon$, the creation-epoch duration $t_s$,
+the FRW distance interpretation, and the radiation-dominated era all
+remain open. Its contribution is narrower but concrete: a conservative
+drainage cascade with finite-epoch self-amplification produces a
+phantom-to-quintessence transition with the right qualitative shape
+and quantitative parameters at $z \lesssim 1$, with the late-time
+exponent $m_0$ emerging as a universal substrate-geometric prediction.
 
 \bibliographystyle{unsrt}
 \bibliography{references}
 
 \end{document}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             

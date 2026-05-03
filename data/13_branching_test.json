@@ -1,0 +1,38 @@
+{
+  "parameters": {
+    "N": 8000,
+    "D_avg": 3.7345,
+    "T_S": 15.0,
+    "GAMMA_ref": 0.415,
+    "E_TOT_ref": 60.74976415142513,
+    "R_INIT_for_B": 2.5206438126961768
+  },
+  "configs": {
+    "A_exponential_source": {
+      "name": "(A) exp source, R(0)=0",
+      "t_peak": 15.0,
+      "m_pre": -3.7155629955885416,
+      "m_post": 1.6515049917325442,
+      "beta_fit": 0.20614758494495883,
+      "beta_R2": 0.849114613048675
+    },
+    "B_impulse_only": {
+      "name": "(B) R(0)=Gauss, no source",
+      "t_peak": 0.06,
+      "m_pre": null,
+      "m_post": 0.9568754537329482,
+      "beta_fit": null,
+      "beta_R2": null
+    },
+    "C_constant_source": {
+      "name": "(C) constant source, R(0)=0",
+      "t_peak": 15.0,
+      "m_pre": -1.4656274219044008,
+      "m_post": 1.5199374335176614,
+      "beta_fit": 0.07961584939933354,
+      "beta_R2": 0.8996986317828624
+    }
+  },
+  "desi_target_m_inf": -3.72,
+  "desi_target_m_0": 1.65
+}

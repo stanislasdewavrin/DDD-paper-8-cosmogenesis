@@ -110,7 +110,8 @@ SUBMISSION STRATEGY
 This manuscript is the eighth in a planned series of ten papers on
 Discrete Drainage Dynamics. Companion papers I-VII are at preprint
 stage on the author's repository; Paper IX (effective cosmology and
-the dilution-vs-expansion equivalence) and Paper X (off-centre
+the dilution-vs-expansion equivalence), Paper X (pre-recombination
+cosmogenesis: CMB, BBN, horizon problem), and Paper XI (off-centre
 observers and cosmological dipoles) are in preparation.
 
 I am happy to follow whichever route the editor prefers: standalone

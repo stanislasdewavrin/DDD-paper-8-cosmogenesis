@@ -1,0 +1,45 @@
+{
+  "mechanism": "variant (A.bis) - self-tuned amplitude with Gauss template",
+  "rule": "dR/dt|source = eps_tilde * R[idx_center] * Gauss(r/sigma) for t < t_s",
+  "constraints": "Gauss-templated, autonomous, seeded (bootstrap)",
+  "parameters": {
+    "N": 8000,
+    "D_avg": 3.7345,
+    "T_S": 15.0,
+    "SIGMA": 3.9,
+    "ALPHA": 0.4,
+    "R_CENTER_SEED": 0.05
+  },
+  "eps_scan": {
+    "0.6": {
+      "m_pre": -3.3775279964880127,
+      "m_post": 1.6583770663632365,
+      "t_peak": 15.0,
+      "R_max": 39.16853370167094,
+      "d_DESI": 0.3425744421733309
+    },
+    "0.65": {
+      "m_pre": -3.7455172218279245,
+      "m_post": 1.6632573179750807,
+      "t_peak": 15.0,
+      "R_max": 81.3415072037792,
+      "d_DESI": 0.02875560970850548
+    },
+    "0.68": {
+      "m_pre": -3.9573618014125884,
+      "m_post": 1.6658266128930421,
+      "t_peak": 15.0,
+      "R_max": 126.00448967337208,
+      "d_DESI": 0.2378888531341794
+    },
+    "0.7": {
+      "m_pre": -4.094901708858771,
+      "m_post": 1.6674120340306473,
+      "t_peak": 15.0,
+      "R_max": 168.64361496836858,
+      "d_DESI": 0.3753058355985301
+    }
+  },
+  "desi_m_inf": -3.72,
+  "desi_m_0": 1.65
+}

@@ -78,8 +78,11 @@ r_node = np.linalg.norm(positions - center, axis=1)
 
 tree = cKDTree(positions)
 pairs = tree.query_pairs(R_LINK, output_type='ndarray')
-edges_i = np.concatenate([pairs[:,0], pairs[:,1]])
-edges_j = np.concatenate([pairs[:,1], pairs[:,0]])
+i_arr = pairs[:,0]
+j_arr = pairs[:,1]
+n_links = len(pairs)
+edges_i = np.concatenate([i_arr, j_arr])
+edges_j = np.concatenate([j_arr, i_arr])
 adj = csr_matrix((np.ones(len(edges_i)), (edges_i, edges_j)), shape=(N, N))
 deg = np.asarray(adj.sum(axis=1)).ravel()
 mean_deg = float(deg.mean())
@@ -109,11 +112,20 @@ for step in range(N_STEPS):
     t = step * DT
     if t < T_S:
         R += DT * S_0 * np.exp(GAMMA * t) * source_amp
-    sumR_neigh = adj @ R
-    flux_net = coef * (sumR_neigh - deg * R)
-    T = np.maximum(flux_net, 0.0)
-    R += DT * flux_net
+    # Per-edge symmetric drainage (matches paper.tex eqn and 04_robustness.py)
+    R_diff_ij = R[j_arr] - R[i_arr]
+    flux_in_i = np.maximum(R_diff_ij,  0.0)
+    flux_in_j = np.maximum(-R_diff_ij, 0.0)
+    dR_per_node = np.zeros(N)
+    np.add.at(dR_per_node, i_arr,  R_diff_ij)
+    np.add.at(dR_per_node, j_arr, -R_diff_ij)
+    R += DT * coef * dR_per_node
     R = np.maximum(R, 0.0)
+    # Correct T_i = (alpha/D_avg) * sum_{j~i} max(R_j - R_i, 0)
+    T_inflow = np.zeros(N)
+    np.add.at(T_inflow, i_arr, flux_in_i)
+    np.add.at(T_inflow, j_arr, flux_in_j)
+    T = coef * T_inflow
 
     if step in snap_indices:
         # radial averages
@@ -170,12 +182,12 @@ def plot_grid(title, snap_dict, vmin, vmax, cmap, label,
             ax.legend(loc='lower right', fontsize=7, framealpha=0.9)
         # Phase label
         if t < T_S:
-            phase = 'source ON  ($w<-1$)'; col = 'lightcoral'
+            phase = r'source ON ($w<-1$)'; col = 'lightcoral'
         elif t < T_S + 5:
-            phase = 'crossing $w \\to -1$'; col = 'gold'
+            phase = r'crossing $w=-1$'; col = 'gold'
         else:
-            phase = 'dilution  ($w>-1$)'; col = 'skyblue'
-        ax.set_title(f'$t = {t:.1f}$  —  {phase}', fontsize=11,
+            phase = r'dilution ($w>-1$)'; col = 'skyblue'
+        ax.set_title(f't = {t:.1f}  —  {phase}', fontsize=11,
                      color=col, fontweight='bold')
         ax.set_xlim(g.min(), g.max())
         ax.set_ylim(g.min(), g.max())
@@ -219,7 +231,7 @@ plot_grid(
 
 # === Figure 2: isotropic T^2(x,y,t) — shows the matter front ===
 plot_grid(
-    title=r'Isotropic reconstruction of $T^2(x,y)$: position of the matter front (lime ring)',
+    title=r'Isotropic reconstruction of $T^2(x,y)$: position of the translational front (lime ring)',
     snap_dict=snap_T2, vmin=vmin_T2, vmax=vmax_T2,
     cmap='inferno', label=r'translational $T^2$ (isotropic from $\langle T^2(r)\rangle$)',
     outname='fig_iso_T2_front',
