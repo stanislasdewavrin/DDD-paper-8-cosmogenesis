@@ -81,6 +81,30 @@ individually; their joint determination from substrate microphysics
 creation epoch) is the principal open problem of the framework.
 \end{abstract}
 
+\noindent\fbox{\parbox{0.96\textwidth}{\small
+\textbf{What this paper makes mechanically legible.}
+$\Lambda$CDM treats the dark-energy equation of state $w \equiv -1$ as input. The DESI DR2 evolving-$w(z)$ preference (with phantom-divide crossing near $z \simeq 0.5$) is hard to accommodate without quintom fields, non-minimal couplings, or modified gravity --- each adding new mysterious fields or parameters. \emph{This paper} interprets the DESI signal as the macroscopic signature of a discrete substrate self-organising from a single localised founding impulse. During a finite \emph{creation epoch} ($t < t_s$), each currently active node amplifies its reserve by the local autocatalysis rule (H-autocatalysis); at $t = t_s$ this ceases and dynamics revert to Paper~I's conservative drainage. The mechanism produces $w(z)$ evolution and the phantom-divide crossing without adding new fields. \textbf{Leverage:} the observed DESI deviation is converted from ``$\Lambda$CDM input requiring quintom additions'' into a substrate cosmogenetic signature; the analogue's central question (emergence + resolution) is answered jointly: $\Lambda$CDM-like emergence in the late substrate, mechanical resolution of the $w(z)$ deviation as a relaxation tail of the founding autocatalysis.
+}}
+\bigskip
+
+
+\paragraph{Programme positioning and analogue framing.}
+DDD does not contest $\Lambda$CDM, $w \equiv -1$ as an effective late-time description, or General Relativity. They are anchors any analogue must reproduce in the appropriate regime. This paper does not propose a new modified-gravity theory; it asks whether the discrete substrate of Papers~I--VII contains a regime --- the cosmogenetic creation epoch --- whose macroscopic relaxation tail produces the observed DESI $w(z)$ deviation without adding any new fields.
+
+
+\paragraph{Which mystery does this paper address?}
+Per SERIES\_FEEDBACK §0.bis, this paper targets:
+
+\begin{itemize}
+\item \textbf{Mystery~\#7 (the Hubble flow and DESI-like late-time deviations).} $\Lambda$CDM treats $w$ as a free parameter (typically fixed at $-1$); conventional dynamical dark-energy models add quintom fields or non-minimal couplings to cross the phantom barrier. This paper offers a substrate-level mechanism --- a finite cosmogenetic creation epoch with local autocatalysis --- whose relaxation tail produces the observed $w(z)$ trajectory naturally.
+\item \textbf{Mystery~\#4 (origin of cosmic expansion / Big Bang).} The Big Bang is treated as initial condition in standard cosmology. This paper offers an interpretation as the substrate emerging from a saturated localised seed; the autocatalysis (H-autocatalysis) is the structural mechanism. Full treatment is partial; the paper focuses on the relaxation-tail signature.
+\end{itemize}
+
+
+\paragraph{Distinctive contribution and ontological reading.}
+$\Lambda$CDM has $w \equiv -1$ by hand and offers no mechanism for its evolution. Quintom and non-minimal-coupling models add new fields whose values are then calibrated --- this is precisely the epicycle accretion failure mode that §0.quater warns against. This paper's distinctive contribution is to produce the $w(z)$ evolution and phantom-divide crossing \emph{without adding any field beyond those of Papers~I--VII}: the only new ingredient is the temporary autocatalysis rule active during the creation epoch, which is labelled (H-autocatalysis) and ceases definitively at $t = t_s$. The leverage: (a) the DESI deviation gets a mechanistic explanation costing zero new fields; (b) the cosmogenetic regime offers a candidate mechanical interpretation of the Big Bang as substrate emergence from a saturated seed; (c) (H-autocatalysis) is a single labelled mechanism whose end-time $t_s$ is a falsifiable parameter, contrasted with the multiple new parameters of quintom models.
+
+
 \section{Main claims and scope}
 \label{sec:claims}
 
@@ -1093,6 +1117,44 @@ cosmogenesis has saturated. Verifying that the relaxation actually
 produces the required cubic local statistics is open.
 
 \FloatBarrier
+
+
+\paragraph{Calibration ledger (per SERIES\_FEEDBACK §0.ter).}
+Each quantity in this paper falls into one of three statuses
+per §0.ter: \emph{derived} from substrate principles +
+hypotheses, \emph{hypothesised} as a labelled structural
+choice, or \emph{calibrated} against an empirical reference
+(SM/GR result or CODATA constant).
+
+\begin{center}
+\begin{tabular}{p{3.6cm}p{2.8cm}p{6.8cm}}
+\toprule
+Quantity & Status & Calibration source / future resolution \\
+\midrule
+$R_{\rm trap}$ (saturated-seed amplitude) & calibrated & DESI normalisation $H_0$ + matter density; future microscopic substrate origin \\
+$\epsilon$ (autocatalysis rate) & calibrated & DESI low-redshift slope of $w(z)$ \\
+$t_s$ (creation-epoch end time) & calibrated & DESI phantom-divide crossing redshift $z \simeq 0.5$ \\
+(H-autocatalysis) local autocatalysis $\dot R_i = \epsilon R_i$ for $t<t_s$ & hypothesis (newly labelled) & not derived; only active during creation epoch; ceases definitively at $t=t_s$ \\
+(H-cosmogenesis) initial localised seed of amplitude $\sim R_{\rm trap}$ around centre $\Omega$ & hypothesis (configuration) & not derived; analogue interpretation of Big Bang \\
+$w(z)$ trajectory + phantom-divide crossing & derived & relaxation tail of (H-autocatalysis) under Paper~I drainage rule \\
+$\Lambda$CDM late-time limit $w \to -1$ & derived (emergence) & matches in $t \gg t_s$ regime \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+
+\paragraph{Rule loci touched and no-epicycle statement (per SERIES\_FEEDBACK §0.quater).}
+This paper introduces content at the following loci of the
+analogue substrate, and at no other:
+
+\begin{itemize}
+\item \emph{Configuration:} the localised initial seed of amplitude $\sim R_{\rm trap}$ around centre $\Omega$ at $t=0$ (cosmogenetic configuration).
+\item \emph{Update rule:} extended by the autocatalysis term $\dot R_i\big|_{\rm source} = \epsilon R_i$ for $t < t_s$, vanishing for $t \ge t_s$.
+\item \emph{Substrate:} same discrete network as Paper~I.
+\item \emph{Nodes / links:} no new fields beyond Paper~I's reserve.
+\end{itemize}
+
+\noindent\emph{No-epicycle statement.} The autocatalysis term is the only new mechanism in the rule, and it is temporary: it ceases definitively at $t = t_s$, after which Paper~I's conservative drainage with $\mu \equiv 1$ governs the dynamics. No new fields are introduced. (H-autocatalysis) and (H-cosmogenesis) are labelled hypotheses with calibrated parameters as documented above. No principle of (L1)--(L6) is permanently violated --- the autocatalysis is a controlled relaxation of internal conservation (L3) confined to the creation epoch and explicitly flagged.
 \section{Limitations and scope}
 \label{sec:not}
 
@@ -1197,8 +1259,10 @@ All code is in the \texttt{code/} subdirectory:
 \begin{enumerate}
 \item Paper~IX (effective cosmology) will treat the
 \emph{dilution--expansion equivalence} systematically.
-\item Paper~XI (observational cosmological constraints) will
-quantitatively analyse off-centre observers.
+\item Paper~XI (\emph{Our Position in the Cosmogenesis}) will
+quantitatively analyse off-centre observers and the resulting
+$H_0$ dipole, bulk flow toward the Great Attractor, and four-way
+directional alignment of late-time anisotropies.
 \item A first-principles derivation of $\epsilon$ from substrate
 criticality is the principal theoretical open task.
 \end{enumerate}
@@ -1233,5 +1297,25 @@ exponent $m_0$ emerging as a universal substrate-geometric prediction.
 \bibliographystyle{unsrt}
 \bibliography{references}
 
+
+
+\paragraph{Closing reaffirmation (analogue framing).}
+This paper does not contest $\Lambda$CDM, $w \equiv -1$ as the
+late-time effective description, or General Relativity. The
+DESI DR2 evolving-$w(z)$ signal is the empirical anchor; what
+this paper offers, and what conventional quintom or modified-gravity
+models cannot, is a mechanism that produces $w(z)$ evolution
+\emph{without adding any new field}: a finite cosmogenetic
+creation epoch with local autocatalysis (H-autocatalysis),
+ceasing definitively at $t = t_s$, after which Paper~I's
+conservative drainage governs. The leverage is not a new
+theory of dark energy --- it is a substrate-level mechanical
+interpretation of the late-time signal that is consistent with
+the rest of the DDD programme and predicts a single new
+parameter $t_s$ (calibrated against the phantom-divide crossing
+redshift). Any deviation between the analogue and the measured
+$w(z)$ trajectory falsifies the analogue, not $\Lambda$CDM.
+
+
 \end{document}
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             

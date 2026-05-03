@@ -134,25 +134,4 @@ SUGGESTED REFEREES
 ==========================================================================
 
 [Suggest 2-3 referees here who work on dynamical dark energy, lattice
-approaches to cosmology, or emergent gravity. Candidates may include
-people working on the DESI analysis, on quintom or non-minimally
-coupled scalar models, or on causal-set / causal-dynamical-
-triangulation approaches to cosmology.]
-
-==========================================================================
-DECLARATIONS
-==========================================================================
-
-  - The author declares no competing financial interests.
-  - The work has not been previously published, and is not under
-    consideration elsewhere.
-  - All simulations were performed by the author on a personal
-    computer.
-  - The author is an independent researcher with no institutional
-    affiliation.
-
-I look forward to your feedback.
-
-With kind regards,
-
-Stanislas de Wavrin
+approaches to cosmology, or emergent gravity. Candidates 
